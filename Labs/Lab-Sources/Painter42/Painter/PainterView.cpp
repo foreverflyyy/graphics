@@ -34,7 +34,7 @@ BEGIN_MESSAGE_MAP(CPainterView, CScrollView)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POLYLINE, OnEditAddshapePolyline)
-	ON_COMMAND(ID_EDIT_ADDSHAPE_MY_POLYGON, OnEditAddshapeMyPolygon)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_STAR, OnEditAddshapeStar)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POLYGON, OnEditAddshapePolygon)
 	ON_WM_LBUTTONDBLCLK()
 	ON_WM_KEYDOWN()
@@ -183,12 +183,16 @@ void CPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_CurMovePoint=m_FirstPoint=LogPoint;
 	switch(m_CurOper)
 	{
+		case OP_STAR:
+			AddShape(m_CurOper, m_FirstPoint, LogPoint);
+			Invalidate();
+			break;
 		case OP_LINE:
 			// Последним в списке должен быть полигон
 			((CPolygon*)pDoc->m_ShapesList.GetTail())->m_PointsArray.Add(LogPoint);
 			// Указываем, что окно надо перерисовать
 			Invalidate();
-		break;
+			break;
 	}
 	
 	// Даем возможность стандартному обработчику
@@ -218,6 +222,7 @@ void CPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	case OP_CIRCLE:
 	case OP_SQUARE:
 	case OP_MY_FIGURE:
+	case OP_STAR:
 	case OP_SURFACE:
 		AddShape(m_CurOper, m_FirstPoint, LogPoint);
 		// Указываем, что окно надо перерисовать
@@ -264,6 +269,7 @@ void CPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		case OP_CIRCLE:
 		case OP_SQUARE:
 		case OP_MY_FIGURE:
+		case OP_STAR:
 		case OP_SURFACE:
 			if(nFlags==MK_LBUTTON) DrawMoveLine(m_FirstPoint, m_CurMovePoint);
 			m_CurMovePoint=LogPoint;
@@ -391,10 +397,17 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
 	break;
 	case OP_MY_FIGURE:
-		pShape=new CMyFigure(first_point.x, first_point.y, size*2);
-		pShape->SetPen(RGB(200,0,0), 100, PS_GEOMETRIC);
-		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
+		pShape = new CStar();
+		((CStar*)pShape)->SetCenter(first_point.x, first_point.y, size * 2);
+
+		pShape->SetPen(RGB(0, 0, 0), 100, PS_GEOMETRIC);
+		pShape->SetBrush(RGB(255, 0, 0));
 	break;
+	case OP_STAR:
+		pShape = new CMyFigure(first_point.x, first_point.y, size * 2);
+		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+		break;
 	case OP_SURFACE:
 		// Создаем объект - поверхность
 		pShape=AddSurface(first_point, size);
@@ -435,6 +448,12 @@ void CPainterView::OnEditAddshapeMyFigure()
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurMyFigure);
 }
 
+void CPainterView::OnEditAddshapeStar()
+{
+	m_CurOper = OP_STAR;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurStar);
+}
+
 void CPainterView::OnEditAddshapePolyline() 
 {
 	CBasePoint *pShape=new CPolygon;
@@ -453,30 +472,30 @@ void CPainterView::OnEditAddshapePolyline()
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
 }
 
-void CPainterView::OnEditAddshapeMyPolygon()
-{
-	CBasePoint *pShape=new CMyPolygon;
-	// Темно-зеленая заливка
-	pShape->SetBrush(RGB(0,100,0));
-	// Черная линия шириной 0.5 мм
-	pShape->SetPen(RGB(0,0,0), 50, PS_GEOMETRIC);
-
-	// Так как pShape указатель на CBasePoint,
-	// а метод SetPolygon() имеется только у класса CPolygon,
-	// требуется преобразование типа указателя
-	((CPolygon*)pShape)->SetPolygon(TRUE);
-
-	CPainterDoc *pDoc=GetDocument();
-	// Добавляем в конец списка
-	pDoc->m_ShapesList.AddTail(pShape);
-	// Последняя фигура становится активной
-	pDoc->m_pSelShape=pShape;
-	// Указываем, что документ изменен
-	pDoc->SetModifiedFlag();
-	
-	m_CurOper = OP_LINE;
-	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
-}
+//void CPainterView::OnEditAddshapeStar()
+//{
+//	CBasePoint *pShape=new CStar;
+//	// Темно-зеленая заливка
+//	pShape->SetBrush(RGB(0,100,0));
+//	// Черная линия шириной 0.5 мм
+//	pShape->SetPen(RGB(0,0,0), 50, PS_GEOMETRIC);
+//
+//	// Так как pShape указатель на CBasePoint,
+//	// а метод SetPolygon() имеется только у класса CPolygon,
+//	// требуется преобразование типа указателя
+//	((CPolygon*)pShape)->SetPolygon(TRUE);
+//
+//	CPainterDoc *pDoc=GetDocument();
+//	// Добавляем в конец списка
+//	pDoc->m_ShapesList.AddTail(pShape);
+//	// Последняя фигура становится активной
+//	pDoc->m_pSelShape=pShape;
+//	// Указываем, что документ изменен
+//	pDoc->SetModifiedFlag();
+//	
+//	m_CurOper = OP_LINE;
+//	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
+//}
 
 void CPainterView::OnEditAddshapePolygon() 
 {

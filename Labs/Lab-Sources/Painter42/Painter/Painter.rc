@@ -107,7 +107,7 @@ BEGIN
     BUTTON      ID_EDIT_ADDSHAPE_SQUARE
     BUTTON      ID_EDIT_ADDSHAPE_MYFIGURE
     BUTTON      ID_EDIT_ADDSHAPE_POLYGON
-    BUTTON      ID_EDIT_ADDSHAPE_MY_POLYGON
+    BUTTON      ID_EDIT_ADDSHAPE_STAR
     BUTTON      ID_EDIT_ADDSHAPE_SURFACE
     SEPARATOR
     BUTTON      ID_APP_ABOUT
@@ -156,7 +156,7 @@ BEGIN
             MENUITEM "Po&lyline",                   ID_EDIT_ADDSHAPE_POLYLINE
 
             MENUITEM "Poly&gon",                    ID_EDIT_ADDSHAPE_POLYGON
-            MENUITEM "MyPoly&gon",                  ID_EDIT_ADDSHAPE_MY_POLYGON
+            MENUITEM "Star&",                       ID_EDIT_ADDSHAPE_STAR
             MENUITEM "Sur&face",                    ID_EDIT_ADDSHAPE_SURFACE
         END
         POPUP "Change &Order"
@@ -456,7 +456,7 @@ STRINGTABLE DISCARDABLE
 BEGIN
     ID_EDIT_DELETE          "Delete selected shape\nDelete"
     ID_EDIT_ADDSHAPE_POLYGON "Draw Polygon/nPolygon"
-    ID_EDIT_ADDSHAPE_MY_POLYGON "Draw MyPolygon/nMyPolygon"
+    ID_EDIT_ADDSHAPE_STAR    "Draw Star/nStar"
     ID_EDIT_ADDSHAPE_POLYLINE "Draw Polyline/nPolyline"
     ID_EDIT_ADDSHAPE_SURFACE "Draw Surface/nSurface"
     ID_SAVE_BMP             "Export the active document into BMP format\nSave As BMP"

@@ -1,13 +1,13 @@
-// файл Shapes.cpp
+п»ї// ГґГ Г©Г« Shapes.cpp
 ////////////////////////////////////////
-//реализация классов
+//Г°ГҐГ Г«ГЁГ§Г Г¶ГЁГї ГЄГ«Г Г±Г±Г®Гў
 #include "stdafx.h"
 #include "shapes.h"
 #include "global.h"
 #include <math.h>
 
 ////////////////////////////////////////
-// Реализация методов класса CBasePoint
+// ГђГҐГ Г«ГЁГ§Г Г¶ГЁГї Г¬ГҐГІГ®Г¤Г®Гў ГЄГ«Г Г±Г±Г  CBasePoint
 CBasePoint::CBasePoint(): CPoint(0, 0)
 {
 	m_wSize=1;
@@ -15,9 +15,9 @@ CBasePoint::CBasePoint(): CPoint(0, 0)
 	m_iPenStyle=PS_SOLID;
 	m_iPenWidth=1;
 	m_rgbPenColor=RGB(0,0,0);
-	m_iBrushStyle=-1; // не используем штриховку
+	m_iBrushStyle=-1; // Г­ГҐ ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГ¬ ГёГІГ°ГЁГµГ®ГўГЄГі
 	m_rgbBrushColor=RGB(0,0,0);
-	m_dwPattern_ID=0; // нет шаблона заливки
+	m_dwPattern_ID=0; // Г­ГҐГІ ГёГ ГЎГ«Г®Г­Г  Г§Г Г«ГЁГўГЄГЁ
 };
 
 CBasePoint::CBasePoint(int x, int y, WORD s):CPoint(x, y)
@@ -27,17 +27,17 @@ CBasePoint::CBasePoint(int x, int y, WORD s):CPoint(x, y)
 	m_iPenStyle=PS_SOLID;
 	m_iPenWidth=1;
 	m_rgbPenColor=RGB(0,0,0);
-	m_iBrushStyle=-1; // не используем штриховку
+	m_iBrushStyle=-1; // Г­ГҐ ГЁГ±ГЇГ®Г«ГјГ§ГіГҐГ¬ ГёГІГ°ГЁГµГ®ГўГЄГі
 	m_rgbBrushColor=RGB(0,0,0);
-	m_dwPattern_ID=0; // нет шаблона заливки
+	m_dwPattern_ID=0; // Г­ГҐГІ ГёГ ГЎГ«Г®Г­Г  Г§Г Г«ГЁГўГЄГЁ
 };
 
 IMPLEMENT_SERIAL(CBasePoint, CObject , VERSIONABLE_SCHEMA|1)
 void CBasePoint::Serialize(CArchive &ar)
 {
-	if(ar.IsStoring()) // сохранение
+	if(ar.IsStoring()) // Г±Г®ГµГ°Г Г­ГҐГ­ГЁГҐ
 	{
-		// Сохраняем параметры объекта
+		// Г‘Г®ГµГ°Г Г­ГїГҐГ¬ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г®ГЎГєГҐГЄГІГ 
 		ar<<x;
 		ar<<y;
 		ar<<m_wSize;
@@ -48,13 +48,13 @@ void CBasePoint::Serialize(CArchive &ar)
 		ar<<m_rgbBrushColor;
 		ar<<m_dwPattern_ID;
 	}
-	else	// чтение
+	else	// Г·ГІГҐГ­ГЁГҐ
 	{
-		// Получили версию формата
+		// ГЏГ®Г«ГіГ·ГЁГ«ГЁ ГўГҐГ°Г±ГЁГѕ ГґГ®Г°Г¬Г ГІГ 
 		int Version=ar.GetObjectSchema();
-		// В зависимости от версии
-		// можно выполнить различные варианты загрузки
-		// Загружаем параметры объекта
+		// Г‚ Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ ГўГҐГ°Г±ГЁГЁ
+		// Г¬Г®Г¦Г­Г® ГўГ»ГЇГ®Г«Г­ГЁГІГј Г°Г Г§Г«ГЁГ·Г­Г»ГҐ ГўГ Г°ГЁГ Г­ГІГ» Г§Г ГЈГ°ГіГ§ГЄГЁ
+		// Г‡Г ГЈГ°ГіГ¦Г ГҐГ¬ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г®ГЎГєГҐГЄГІГ 
 		ar>>x;
 		ar>>y;
 		ar>>m_wSize;
@@ -74,9 +74,9 @@ BOOL CBasePoint::SetPen(COLORREF color, int width /*=1*/, int style/*=PS_SOLID*/
 	m_iPenStyle=style;
 	m_iPenWidth=width;
 	m_rgbPenColor=color;
-	if(HPEN(m_Pen)!=NULL)	// если перо уже существует
-		if(!m_Pen.DeleteObject()) return FALSE; // удалили старое перо
-	// Создаем новое перо и возвращаем результат
+	if(HPEN(m_Pen)!=NULL)	// ГҐГ±Г«ГЁ ГЇГҐГ°Г® ГіГ¦ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
+		if(!m_Pen.DeleteObject()) return FALSE; // ГіГ¤Г Г«ГЁГ«ГЁ Г±ГІГ Г°Г®ГҐ ГЇГҐГ°Г®
+	// Г‘Г®Г§Г¤Г ГҐГ¬ Г­Г®ГўГ®ГҐ ГЇГҐГ°Г® ГЁ ГўГ®Г§ГўГ°Г Г№Г ГҐГ¬ Г°ГҐГ§ГіГ«ГјГІГ ГІ
 	return m_Pen.CreatePen( m_iPenStyle, m_iPenWidth, m_rgbPenColor);
 };
 BOOL CBasePoint::SetBrush(COLORREF color, DWORD pattern /*=0*/, int style/*=-1*/)
@@ -85,17 +85,17 @@ BOOL CBasePoint::SetBrush(COLORREF color, DWORD pattern /*=0*/, int style/*=-1*/
 	m_dwPattern_ID=pattern;
 	m_rgbBrushColor=color;
 	int res=1;
-	if(HBRUSH(m_Brush)!=NULL)	// если кисть уже существует
-		if(!m_Brush.DeleteObject()) return FALSE; // удалили старую кисть
-	if(m_dwPattern_ID>0)	// есть шаблон заливки
+	if(HBRUSH(m_Brush)!=NULL)	// ГҐГ±Г«ГЁ ГЄГЁГ±ГІГј ГіГ¦ГҐ Г±ГіГ№ГҐГ±ГІГўГіГҐГІ
+		if(!m_Brush.DeleteObject()) return FALSE; // ГіГ¤Г Г«ГЁГ«ГЁ Г±ГІГ Г°ГіГѕ ГЄГЁГ±ГІГј
+	if(m_dwPattern_ID>0)	// ГҐГ±ГІГј ГёГ ГЎГ«Г®Г­ Г§Г Г«ГЁГўГЄГЁ
 	{
 		CBitmap Pattern;
 		if(!Pattern.LoadBitmap(m_dwPattern_ID)) return FALSE;
 		return m_Brush.CreatePatternBrush(&Pattern);
 	}
-	if(m_iBrushStyle>=0)	// указан стиль штриховки
+	if(m_iBrushStyle>=0)	// ГіГЄГ Г§Г Г­ Г±ГІГЁГ«Гј ГёГІГ°ГЁГµГ®ГўГЄГЁ
 		return m_Brush.CreateHatchBrush( m_iBrushStyle, m_rgbBrushColor);
-	// Создаем сплошную кисть и возвращаем результат
+	// Г‘Г®Г§Г¤Г ГҐГ¬ Г±ГЇГ«Г®ГёГ­ГіГѕ ГЄГЁГ±ГІГј ГЁ ГўГ®Г§ГўГ°Г Г№Г ГҐГ¬ Г°ГҐГ§ГіГ«ГјГІГ ГІ
 	return m_Brush.CreateSolidBrush(m_rgbBrushColor);
 };
 
@@ -103,9 +103,9 @@ BOOL CBasePoint::SetBrush(COLORREF color, DWORD pattern /*=0*/, int style/*=-1*/
 
 BOOL CBasePoint::PrepareDC(CDC *pDC)
 {
-	// Сохраняем состояние контекста устройства
+	// Г‘Г®ГµГ°Г Г­ГїГҐГ¬ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЄГ®Г­ГІГҐГЄГ±ГІГ  ГіГ±ГІГ°Г®Г©Г±ГІГўГ 
 	if(!pDC->SaveDC()) return FALSE;
-	// Устанавливаем перо и кисть 
+	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЇГҐГ°Г® ГЁ ГЄГЁГ±ГІГј 
 	if(HPEN(m_Pen)!=NULL)
 		pDC->SelectObject(&m_Pen);
 	if(HBRUSH(m_Brush)!=NULL)
@@ -115,17 +115,17 @@ BOOL CBasePoint::PrepareDC(CDC *pDC)
 
 BOOL CBasePoint::RestoreDC(CDC *pDC)
 {
-	// Восстанавливаем состояние контекста устройства
+	// Г‚Г®Г±Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г±Г®Г±ГІГ®ГїГ­ГЁГҐ ГЄГ®Г­ГІГҐГЄГ±ГІГ  ГіГ±ГІГ°Г®Г©Г±ГІГўГ 
 	return pDC->RestoreDC(-1);
 };
 
 void CBasePoint::Show(CDC* pDC) 
 {
-	// Устанавливаем перео и кисть
+	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЇГҐГ°ГҐГ® ГЁ ГЄГЁГ±ГІГј
 	PrepareDC(pDC);
-	// Рисуем кружок, обозначающий точку
+	// ГђГЁГ±ГіГҐГ¬ ГЄГ°ГіГ¦Г®ГЄ, Г®ГЎГ®Г§Г­Г Г·Г ГѕГ№ГЁГ© ГІГ®Г·ГЄГі
 	pDC->Ellipse(x-m_wSize, y-m_wSize, x+m_wSize, y+m_wSize);
-	// Восстанавливаем контекст
+	// Г‚Г®Г±Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЄГ®Г­ГІГҐГЄГ±ГІ
 	RestoreDC(pDC);
 } 
 
@@ -143,7 +143,7 @@ void CBasePoint::Transform(const CPoint &point0, double ang, int a, int b)
 BOOL CBasePoint::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags) 
 {
 	BOOL res=TRUE;
-	if(nMyFlags & SHIFT_HOLD) //поворот
+	if(nMyFlags & SHIFT_HOLD) //ГЇГ®ГўГ®Г°Г®ГІ
 		switch(nChar)
 		{
 			case 37: 
@@ -155,19 +155,19 @@ BOOL CBasePoint::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags)
 			default:
 				res=FALSE;
 		}
-	else //перенос
+	else //ГЇГҐГ°ГҐГ­Г®Г±
 		switch(nChar)
 		{
-			case 38: // вверх
+			case 38: // ГўГўГҐГ°Гµ
 				Transform(CPoint(0,0), 0, 0, MOVE_STEP);
 				break; 
-			case 40: // вниз
+			case 40: // ГўГ­ГЁГ§
 				Transform(CPoint(0,0), 0, 0, -MOVE_STEP); 
 				break;
-			case 37: // влево
+			case 37: // ГўГ«ГҐГўГ®
 				Transform(CPoint(0,0), 0, -MOVE_STEP, 0);
 				break;
-			case 39: // вправо
+			case 39: // ГўГЇГ°Г ГўГ®
 				Transform(CPoint(0,0), 0, MOVE_STEP, 0);
 				break;
 			default:
@@ -177,7 +177,7 @@ BOOL CBasePoint::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags)
 }
 
 ////////////////////////////////////////
-// Реализация методов класса CSquare
+// ГђГҐГ Г«ГЁГ§Г Г¶ГЁГї Г¬ГҐГІГ®Г¤Г®Гў ГЄГ«Г Г±Г±Г  CSquare
 
 CSquare::CSquare(int x, int y, WORD s): CBasePoint(x, y, s)
 {
@@ -197,11 +197,11 @@ void CSquare::Serialize(CArchive &ar)
 void CSquare::Show(CDC* pDC) 
 {
 	int s=m_wSize/2;
-	// Устанавливаем перео и кисть
+	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЇГҐГ°ГҐГ® ГЁ ГЄГЁГ±ГІГј
 	PrepareDC(pDC);
-	// Рисуем квадрат
+	// ГђГЁГ±ГіГҐГ¬ ГЄГўГ Г¤Г°Г ГІ
 	pDC->Rectangle(x-s, y-s, x+s, y+s);
-	// Восстанавливаем контекст
+	// Г‚Г®Г±Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЄГ®Г­ГІГҐГЄГ±ГІ
 	RestoreDC(pDC);
 } 
 
@@ -212,7 +212,7 @@ void CSquare::GetRegion(CRgn &Rgn)
 }
 
 ////////////////////////////////////////
-// Реализация методов класса CMyFigure
+// ГђГҐГ Г«ГЁГ§Г Г¶ГЁГї Г¬ГҐГІГ®Г¤Г®Гў ГЄГ«Г Г±Г±Г  CMyFigure
 
 CMyFigure::CMyFigure(int x, int y, WORD s) : CBasePoint(x, y, s)
 {
@@ -248,68 +248,7 @@ void CMyFigure::GetRegion(CRgn& Rgn)
 }
 
 ////////////////////////////////////////
-// Реализация методов класса CMyPolygon
-
-CMyPolygon::CMyPolygon() : CBasePoint()
-{
-	m_wSize = 40;
-	m_bPolygon = FALSE;
-}
-
-CMyPolygon::~CMyPolygon()
-{
-	m_PointsArray.RemoveAll();
-}
-
-
-IMPLEMENT_SERIAL(CMyPolygon, CObject, 1)
-void CMyPolygon::Serialize(CArchive& ar)
-{
-	if (ar.IsStoring()) // сохранение
-	{
-		// Сохраняем параметры объекта
-		ar << m_bPolygon;
-	}
-	else	// чтение
-	{
-		// Получили версию формата
-		int Version = ar.GetObjectSchema();
-		// В зависимости от версии
-		// можно выполнить различные варианты загрузки
-		// Загружаем параметры объекта
-		ar >> m_bPolygon;
-	}
-	m_PointsArray.Serialize(ar);
-	CBasePoint::Serialize(ar);
-}
-void CMyPolygon::Show(CDC* pDC)
-{
-	// Устанавливаем перео и кисть
-	PrepareDC(pDC);
-	// Рисуем 
-	CRect rect_1(x - m_wSize, y - m_wSize, x + m_wSize, y + m_wSize);
-	CRect rect_2(x - m_wSize * 0.7, y - m_wSize * 0.7, x + m_wSize * 0.7, y + m_wSize * 0.7);
-
-	pDC->FillRect(rect_1, new CBrush(RGB(0, 119, 255)));
-	pDC->Ellipse(x - m_wSize, y - m_wSize, x + m_wSize, y + m_wSize);
-	pDC->FillRect(rect_2, new CBrush(RGB(255, 0, 64)));
-	// Восстанавливаем контекст
-	RestoreDC(pDC);
-}
-
-void CMyPolygon::GetRegion(CRgn& Rgn)
-{
-	Rgn.CreatePolygonRgn(m_PointsArray.GetData(), m_PointsArray.GetSize(), ALTERNATE);
-}
-
-void CMyPolygon::Transform(const CPoint& point0, double ang, int a, int b)
-{
-	for (int i = 0; i < m_PointsArray.GetSize(); i++)
-		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
-};
-
-////////////////////////////////////////
-// Реализация методов класса CPolygon
+// ГђГҐГ Г«ГЁГ§Г Г¶ГЁГї Г¬ГҐГІГ®Г¤Г®Гў ГЄГ«Г Г±Г±Г  CPolygon
 
 CPolygon::CPolygon(): CBasePoint()
 {
@@ -326,18 +265,18 @@ CPolygon::~CPolygon()
 IMPLEMENT_SERIAL(CPolygon, CObject, 1)
 void CPolygon::Serialize(CArchive &ar)
 {
-	if(ar.IsStoring()) // сохранение
+	if(ar.IsStoring()) // Г±Г®ГµГ°Г Г­ГҐГ­ГЁГҐ
 	{
-		// Сохраняем параметры объекта
+		// Г‘Г®ГµГ°Г Г­ГїГҐГ¬ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г®ГЎГєГҐГЄГІГ 
 		ar<<m_bPolygon;
 	}
-	else	// чтение
+	else	// Г·ГІГҐГ­ГЁГҐ
 	{
-		// Получили версию формата
+		// ГЏГ®Г«ГіГ·ГЁГ«ГЁ ГўГҐГ°Г±ГЁГѕ ГґГ®Г°Г¬Г ГІГ 
 		int Version=ar.GetObjectSchema();
-		// В зависимости от версии
-		// можно выполнить различные варианты загрузки
-		// Загружаем параметры объекта
+		// Г‚ Г§Г ГўГЁГ±ГЁГ¬Г®Г±ГІГЁ Г®ГІ ГўГҐГ°Г±ГЁГЁ
+		// Г¬Г®Г¦Г­Г® ГўГ»ГЇГ®Г«Г­ГЁГІГј Г°Г Г§Г«ГЁГ·Г­Г»ГҐ ГўГ Г°ГЁГ Г­ГІГ» Г§Г ГЈГ°ГіГ§ГЄГЁ
+		// Г‡Г ГЈГ°ГіГ¦Г ГҐГ¬ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г®ГЎГєГҐГЄГІГ 
 		ar>>m_bPolygon;
 	}	
 	m_PointsArray.Serialize(ar);
@@ -345,14 +284,14 @@ void CPolygon::Serialize(CArchive &ar)
 }
 void CPolygon::Show(CDC* pDC) 
 {
-	// Устанавливаем перео и кисть
+	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЇГҐГ°ГҐГ® ГЁ ГЄГЁГ±ГІГј
 	PrepareDC(pDC);
-	// Рисуем 
+	// ГђГЁГ±ГіГҐГ¬ 
 	if(m_bPolygon)
 		pDC->Polygon(m_PointsArray.GetData(), m_PointsArray.GetSize());
 	else
 		pDC->Polyline( m_PointsArray.GetData(), m_PointsArray.GetSize());
-	// Восстанавливаем контекст
+	// Г‚Г®Г±Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЄГ®Г­ГІГҐГЄГ±ГІ
 	RestoreDC(pDC);
 } 
 
@@ -365,6 +304,71 @@ void CPolygon::Transform(const CPoint &point0, double ang, int a, int b)
 {
 	for(int i=0; i<m_PointsArray.GetSize(); i++)
 		m_PointsArray[i]=::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
+};
+
+////////////////////////////////////////
+// РљР»Р°СЃСЃ CStar
+
+CStar::CStar() : CPolygon()
+{
+	m_wSize = 40;
+	m_bPolygon = TRUE;
+}
+
+CStar::~CStar()
+{
+	m_PointsArray.RemoveAll();
+}
+
+IMPLEMENT_SERIAL(CStar, CObject, 1)
+void CStar::Serialize(CArchive& ar)
+{
+	if (ar.IsStoring())
+	{
+		ar << m_bPolygon;
+	}
+	else
+	{
+		int Version = ar.GetObjectSchema();
+		ar >> m_bPolygon;
+	}
+	m_PointsArray.Serialize(ar);
+	CBasePoint::Serialize(ar);
+}
+void CStar::Show(CDC* pDC)
+{
+	PrepareDC(pDC);
+	
+	pDC->Polygon(m_PointsArray.GetData(), m_PointsArray.GetSize());
+
+	RestoreDC(pDC);
+}
+
+void CStar::SetCenter(int x, int y, WORD s) 
+{
+	m_wSize = s;
+	m_PointsArray.Add(CPoint(x + 200, y + 300));
+	m_PointsArray.Add(CPoint(x + 1000, y + 400));
+	m_PointsArray.Add(CPoint(x + 400, y - 100));
+	m_PointsArray.Add(CPoint(x + 700, y - 1000));
+	m_PointsArray.Add(CPoint(x, y - 400));
+	m_PointsArray.Add(CPoint(x - 700, y - 1000));
+	m_PointsArray.Add(CPoint(x - 400, y - 100));
+	m_PointsArray.Add(CPoint(x - 1000, y + 400));
+	m_PointsArray.Add(CPoint(x - 200, y + 300));
+	m_PointsArray.Add(CPoint(x, y + 1200));
+	m_PointsArray.Add(CPoint(x + 200, y + 300));
+}
+
+void CStar::GetRegion(CRgn& Rgn)
+{
+	Rgn.CreatePolygonRgn(m_PointsArray.GetData(), m_PointsArray.GetSize(), ALTERNATE);
+}
+
+void CStar::Transform(const CPoint& point0, double ang, int a, int b)
+{
+	for (int i = 0; i < m_PointsArray.GetSize(); i++)
+		m_PointsArray[i] = ::Transform(m_PointsArray[i], m_PointsArray[0], ang, a, b);
 };
 
 /////////////////////////////////////////////////
@@ -387,12 +391,12 @@ void C3DPolygon::Serialize(CArchive &ar)
 
 void C3DPolygon::MakeProjection(Perspective P)
 {
-	// Перевод в радианы
+	// ГЏГҐГ°ГҐГўГ®Г¤ Гў Г°Г Г¤ГЁГ Г­Г»
 	P.theta=P.theta*atan(1.0)/45.0; P.phi=P.phi*atan(1.0)/45.0;
-	// Расчет коэффициентов матрицы преобразования
-	// Если установлен режим отображения MM_TEXT, при котором начало координат
-	// в верхнем левом углу, требуется лишь заменить на противоположный знак 
-	// у коэффициентов второго столбца матрицы преобразования (перевернуть ось Y)
+	// ГђГ Г±Г·ГҐГІ ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў Г¬Г ГІГ°ГЁГ¶Г» ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї
+	// Г…Г±Г«ГЁ ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­ Г°ГҐГ¦ГЁГ¬ Г®ГІГ®ГЎГ°Г Г¦ГҐГ­ГЁГї MM_TEXT, ГЇГ°ГЁ ГЄГ®ГІГ®Г°Г®Г¬ Г­Г Г·Г Г«Г® ГЄГ®Г®Г°Г¤ГЁГ­Г ГІ
+	// Гў ГўГҐГ°ГµГ­ГҐГ¬ Г«ГҐГўГ®Г¬ ГіГЈГ«Гі, ГІГ°ГҐГЎГіГҐГІГ±Гї Г«ГЁГёГј Г§Г Г¬ГҐГ­ГЁГІГј Г­Г  ГЇГ°Г®ГІГЁГўГ®ГЇГ®Г«Г®Г¦Г­Г»Г© Г§Г­Г ГЄ 
+	// Гі ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ®Гў ГўГІГ®Г°Г®ГЈГ® Г±ГІГ®Г«ГЎГ¶Г  Г¬Г ГІГ°ГЁГ¶Г» ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї (ГЇГҐГ°ГҐГўГҐГ°Г­ГіГІГј Г®Г±Гј Y)
 
 	double  st=sin(P.theta), ct=cos(P.theta), sp=sin(P.phi), cp=cos(P.phi),
 	v11=-st,	v12=-cp*ct,	v13=-sp*ct,
@@ -401,7 +405,7 @@ void C3DPolygon::MakeProjection(Perspective P)
 	v41=P.dx,	v42=P.dy,	v43=P.rho;
 	double x, y, z;
 	double TempZ=0;
-	//расчет видовых координат точек
+	//Г°Г Г±Г·ГҐГІ ГўГЁГ¤Г®ГўГ»Гµ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІ ГІГ®Г·ГҐГЄ
 	 m_PointsArray.SetSize(m_3DPointsArray.GetSize());
 	for(int i=0; i<m_3DPointsArray.GetSize(); i++)
 	{
@@ -413,7 +417,7 @@ void C3DPolygon::MakeProjection(Perspective P)
 		m_PointsArray[i].x=(LONG)(v11*x+v21*y+v41+0.5);
 		m_PointsArray[i].y=(LONG)(v12*x+v22*y+v32*z+v42+0.5);
 
-		// Перспективные преобразования
+		// ГЏГҐГ°Г±ГЇГҐГЄГІГЁГўГ­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї
 		if(P.with_perspective)
 		{
 			m_PointsArray[i].x=(LONG)(P.d*m_PointsArray[i].x/TempZ +0.5);
@@ -431,10 +435,10 @@ C3DShape::C3DShape(): CBasePoint()
 	m_Percpective.O.x=0;
 	m_Percpective.O.y=0;
 	m_Percpective.O.z=0;
-	m_Percpective.rho=50000; //50 см. в режиме MM_HIMETRIC
+	m_Percpective.rho=50000; //50 Г±Г¬. Гў Г°ГҐГ¦ГЁГ¬ГҐ MM_HIMETRIC
 	m_Percpective.theta=30;  
 	m_Percpective.phi=30;
-	m_Percpective.d=25000; //25 см. в режиме MM_HIMETRIC
+	m_Percpective.d=25000; //25 Г±Г¬. Гў Г°ГҐГ¦ГЁГ¬ГҐ MM_HIMETRIC
 	m_Percpective.with_perspective=TRUE;
 	m_Percpective.dx=0;
 	m_Percpective.dy=0;
@@ -482,7 +486,7 @@ void C3DShape::Serialize(CArchive &ar)
 
 void C3DShape::Show(CDC *pDC)
 {
-	// Вывод всех полигонов
+	// Г‚Г»ГўГ®Г¤ ГўГ±ГҐГµ ГЇГ®Г«ГЁГЈГ®Г­Г®Гў
 	POSITION Pos=NULL;
 	if(m_PtrPolygonList.GetCount()>0)
 		Pos=m_PtrPolygonList.GetHeadPosition();
@@ -494,23 +498,23 @@ void C3DShape::Show(CDC *pDC)
 
 void C3DShape::GetRegion(CRgn &Rgn)
 {
-	// Конструируем  область захвата C3DShape,
-	// в виде прямоугольника, охватывающего изображение 
-	// фигуры на экране
-	CRect Frame; // охватывающий прямоугольник
+	// ГЉГ®Г­Г±ГІГ°ГіГЁГ°ГіГҐГ¬  Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ  C3DShape,
+	// Гў ГўГЁГ¤ГҐ ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­ГЁГЄГ , Г®ГµГўГ ГІГ»ГўГ ГѕГ№ГҐГЈГ® ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ 
+	// ГґГЁГЈГіГ°Г» Г­Г  ГЅГЄГ°Г Г­ГҐ
+	CRect Frame; // Г®ГµГўГ ГІГ»ГўГ ГѕГ№ГЁГ© ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­ГЁГЄ
 	POSITION Pos=NULL;
 	int i=0;
 	CPolygon *pPolygon=NULL;
 	if(m_PtrPolygonList.GetCount()>0)
 		Pos=m_PtrPolygonList.GetHeadPosition();
-	// Инициализируем прямоугольник значениями первой точки первого полигона
+	// Г€Г­ГЁГ¶ГЁГ Г«ГЁГ§ГЁГ°ГіГҐГ¬ ГЇГ°ГїГ¬Г®ГіГЈГ®Г«ГјГ­ГЁГЄ Г§Г­Г Г·ГҐГ­ГЁГїГ¬ГЁ ГЇГҐГ°ГўГ®Г© ГІГ®Г·ГЄГЁ ГЇГҐГ°ГўГ®ГЈГ® ГЇГ®Г«ГЁГЈГ®Г­Г 
 	if(Pos!=NULL && (pPolygon=m_PtrPolygonList.GetAt(Pos))!=NULL && pPolygon->m_PointsArray.GetSize()>0)
 	{
 		Frame.left=Frame.right=pPolygon->m_PointsArray[0].x;
 		Frame.top=Frame.bottom=pPolygon->m_PointsArray[0].y;
 	}
 	else return;
-	// Получаем габариты фигуры	
+	// ГЏГ®Г«ГіГ·Г ГҐГ¬ ГЈГ ГЎГ Г°ГЁГІГ» ГґГЁГЈГіГ°Г»	
 	while(Pos!=NULL)
 	{
 		pPolygon=m_PtrPolygonList.GetNext(Pos);
@@ -522,15 +526,15 @@ void C3DShape::GetRegion(CRgn &Rgn)
 			if(pPolygon->m_PointsArray[i].y<Frame.top) Frame.top=pPolygon->m_PointsArray[i].y;
 		};
 	}
-	// Создаем область
+	// Г‘Г®Г§Г¤Г ГҐГ¬ Г®ГЎГ«Г Г±ГІГј
 	Rgn.CreateRectRgn(Frame.left, Frame.top, Frame.right, Frame.bottom);
 }
 
 	
 void C3DShape::AddPolygon(C3DPolygon *pPolygon)
 {
-	m_PtrPolygonList.AddTail(pPolygon);	//добавили в список
-	// расчет центра
+	m_PtrPolygonList.AddTail(pPolygon);	//Г¤Г®ГЎГ ГўГЁГ«ГЁ Гў Г±ГЇГЁГ±Г®ГЄ
+	// Г°Г Г±Г·ГҐГІ Г¶ГҐГ­ГІГ°Г 
 	POSITION Pos=NULL;
 	C3DPolygon* pCurPolygon=NULL;
 	WORD Count=0, i=0;
@@ -569,128 +573,128 @@ BOOL C3DShape::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags)
 	if(nMyFlags & SHIFT_HOLD)
 	switch(nChar)
 	{
-		case 38: m_Percpective.phi-=ROTATE_STEP; break;	//Up точка наблюдения выше
-		case 40: m_Percpective.phi+=ROTATE_STEP; break;	//Down точка наблюдения ниже
-		case 37: m_Percpective.theta-=ROTATE_STEP; break; //Left точка наблюдения левее
-		case 39: m_Percpective.theta+=ROTATE_STEP; break; //Right точка наблюдения правее
+		case 38: m_Percpective.phi-=ROTATE_STEP; break;	//Up ГІГ®Г·ГЄГ  Г­Г ГЎГ«ГѕГ¤ГҐГ­ГЁГї ГўГ»ГёГҐ
+		case 40: m_Percpective.phi+=ROTATE_STEP; break;	//Down ГІГ®Г·ГЄГ  Г­Г ГЎГ«ГѕГ¤ГҐГ­ГЁГї Г­ГЁГ¦ГҐ
+		case 37: m_Percpective.theta-=ROTATE_STEP; break; //Left ГІГ®Г·ГЄГ  Г­Г ГЎГ«ГѕГ¤ГҐГ­ГЁГї Г«ГҐГўГҐГҐ
+		case 39: m_Percpective.theta+=ROTATE_STEP; break; //Right ГІГ®Г·ГЄГ  Г­Г ГЎГ«ГѕГ¤ГҐГ­ГЁГї ГЇГ°Г ГўГҐГҐ
 		default: res=FALSE;
 	}
 	else
 	if(nMyFlags & CTRL_HOLD)	 
 	switch(nChar)
 	{
-		case 38: m_Percpective.d+=MOVE_STEP; break; //Up экран дальше
-		case 40: m_Percpective.d-=MOVE_STEP; break; //Down экран ближе
+		case 38: m_Percpective.d+=MOVE_STEP; break; //Up ГЅГЄГ°Г Г­ Г¤Г Г«ГјГёГҐ
+		case 40: m_Percpective.d-=MOVE_STEP; break; //Down ГЅГЄГ°Г Г­ ГЎГ«ГЁГ¦ГҐ
 		default: res=FALSE;
 	}
 	else
 	{
-		//перенос
+		//ГЇГҐГ°ГҐГ­Г®Г±
 		switch(nChar)
 		{
-			case 38:	m_Percpective.dy+= MOVE_STEP; break; // вверх
-			case 40: 	m_Percpective.dy-= MOVE_STEP; break; // вниз
-			case 37: 	m_Percpective.dx-= MOVE_STEP; break; // влево
-			case 39:    m_Percpective.dx+= MOVE_STEP; break; // вправо
-			// клавиша P вкл/выкл перспективные преобразования
+			case 38:	m_Percpective.dy+= MOVE_STEP; break; // ГўГўГҐГ°Гµ
+			case 40: 	m_Percpective.dy-= MOVE_STEP; break; // ГўГ­ГЁГ§
+			case 37: 	m_Percpective.dx-= MOVE_STEP; break; // ГўГ«ГҐГўГ®
+			case 39:    m_Percpective.dx+= MOVE_STEP; break; // ГўГЇГ°Г ГўГ®
+			// ГЄГ«Г ГўГЁГёГ  P ГўГЄГ«/ГўГ»ГЄГ« ГЇГҐГ°Г±ГЇГҐГЄГІГЁГўГ­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї
 			case 80:    m_Percpective.with_perspective=!m_Percpective.with_perspective;
 						break; 
 			default:	res=FALSE;
 		}	
 	}
 	if(res)
-		// Расчет проекции
+		// ГђГ Г±Г·ГҐГІ ГЇГ°Г®ГҐГЄГ¶ГЁГЁ
 		MakeProjection();
 	return res;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////////
-// Глобальные функции для работы с поверхностями
+// ГѓГ«Г®ГЎГ Г«ГјГ­Г»ГҐ ГґГіГ­ГЄГ¶ГЁГЁ Г¤Г«Гї Г°Г ГЎГ®ГІГ» Г± ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГїГ¬ГЁ
 
 int AddRsection(C3DShape *pShape, POINT3D *pSur, int x_size, int y_size, double level, COLORREF color)
 {
 	if(x_size<2 || y_size<2) return 0;
-	// Полигон для временного хранения точек линии уровня
+	// ГЏГ®Г«ГЁГЈГ®Г­ Г¤Г«Гї ГўГ°ГҐГ¬ГҐГ­Г­Г®ГЈГ® ГµГ°Г Г­ГҐГ­ГЁГї ГІГ®Г·ГҐГЄ Г«ГЁГ­ГЁГЁ ГіГ°Г®ГўГ­Гї
 	C3DPolygon *pTempPolygon=new C3DPolygon();
 	if(pTempPolygon==NULL) return 0; 
-	// Разбиваем поверхность на треугольники и
-	// пробуем найти пересечение для каждого треугольника и плоскости level.
-	// Точки пересечения добавляем в pTempPolygon
+	// ГђГ Г§ГЎГЁГўГ ГҐГ¬ ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГј Г­Г  ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄГЁ ГЁ
+	// ГЇГ°Г®ГЎГіГҐГ¬ Г­Г Г©ГІГЁ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГҐ Г¤Г«Гї ГЄГ Г¦Г¤Г®ГЈГ® ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄГ  ГЁ ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ level.
+	// Г’Г®Г·ГЄГЁ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Гў pTempPolygon
 	for(int x=0, y=0; y<y_size-1; y++)
 		for(int x=0;  x<x_size-1; x++)
 		{
 			AddTriangleSection(pTempPolygon, &pSur[y*x_size+x], &pSur[(y+1)*x_size+x+1], &pSur[y*x_size+x+1], level);
 			AddTriangleSection(pTempPolygon, &pSur[y*x_size+x], &pSur[(y+1)*x_size+x], &pSur[(y+1)*x_size+x+1], level);
 		}
-	// Из полученного набора точек создаем аккуратные полигончики
-	// Для упрощения работы с точками получим ссылку на данные
-	// Это конечно не лучшая иллюстрация принципов ООП, зато удобно :)
+	// Г€Г§ ГЇГ®Г«ГіГ·ГҐГ­Г­Г®ГЈГ® Г­Г ГЎГ®Г°Г  ГІГ®Г·ГҐГЄ Г±Г®Г§Г¤Г ГҐГ¬ Г ГЄГЄГіГ°Г ГІГ­Г»ГҐ ГЇГ®Г«ГЁГЈГ®Г­Г·ГЁГЄГЁ
+	// Г„Г«Гї ГіГЇГ°Г®Г№ГҐГ­ГЁГї Г°Г ГЎГ®ГІГ» Г± ГІГ®Г·ГЄГ Г¬ГЁ ГЇГ®Г«ГіГ·ГЁГ¬ Г±Г±Г»Г«ГЄГі Г­Г  Г¤Г Г­Г­Г»ГҐ
+	// ГќГІГ® ГЄГ®Г­ГҐГ·Г­Г® Г­ГҐ Г«ГіГ·ГёГ Гї ГЁГ«Г«ГѕГ±ГІГ°Г Г¶ГЁГї ГЇГ°ГЁГ­Г¶ГЁГЇГ®Гў ГЋГЋГЏ, Г§Г ГІГ® ГіГ¤Г®ГЎГ­Г® :)
 	CArray <POINT3D, POINT3D> &TempPointsArray=pTempPolygon->m_3DPointsArray;
 	
 	int pos=0, posmin=0;
 	POINT3D EndSegPoint;
-	double D=0, dcur=0, dmin=0; // расстояние между точками
+	double D=0, dcur=0, dmin=0; // Г°Г Г±Г±ГІГ®ГїГ­ГЁГҐ Г¬ГҐГ¦Г¤Гі ГІГ®Г·ГЄГ Г¬ГЁ
 	C3DPolygon *pSeg;
-	BOOL fContinueSeg=TRUE; // флаг "продолжить текущий сегмент"
-	// Вычисляем эталонное расстояние между точками - диагональ сетки на плоскости
+	BOOL fContinueSeg=TRUE; // ГґГ«Г ГЈ "ГЇГ°Г®Г¤Г®Г«Г¦ГЁГІГј ГІГҐГЄГіГ№ГЁГ© Г±ГҐГЈГ¬ГҐГ­ГІ"
+	// Г‚Г»Г·ГЁГ±Г«ГїГҐГ¬ ГЅГІГ Г«Г®Г­Г­Г®ГҐ Г°Г Г±Г±ГІГ®ГїГ­ГЁГҐ Г¬ГҐГ¦Г¤Гі ГІГ®Г·ГЄГ Г¬ГЁ - Г¤ГЁГ ГЈГ®Г­Г Г«Гј Г±ГҐГІГЄГЁ Г­Г  ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
 	POINT3D P1=pSur[0], P2=pSur[x_size+1];	P1.z=P2.z=0;
 	D=Dist(&P1, &P2);  
-	// Пока во временном массиве осталась хотя бы пара точек
-	// cсоздаем из массива сегменты сечения
+	// ГЏГ®ГЄГ  ГўГ® ГўГ°ГҐГ¬ГҐГ­Г­Г®Г¬ Г¬Г Г±Г±ГЁГўГҐ Г®Г±ГІГ Г«Г Г±Гј ГµГ®ГІГї ГЎГ» ГЇГ Г°Г  ГІГ®Г·ГҐГЄ
+	// cГ±Г®Г§Г¤Г ГҐГ¬ ГЁГ§ Г¬Г Г±Г±ГЁГўГ  Г±ГҐГЈГ¬ГҐГ­ГІГ» Г±ГҐГ·ГҐГ­ГЁГї
 	while(TempPointsArray.GetSize()-1>0)
 	{
-		// Новый сегмент - полигон
+		// ГЌГ®ГўГ»Г© Г±ГҐГЈГ¬ГҐГ­ГІ - ГЇГ®Г«ГЁГЈГ®Г­
 		pSeg=new C3DPolygon();	fContinueSeg=TRUE;
 		if(pSeg==NULL) return 0;
-		// Установим цвет
+		// Г“Г±ГІГ Г­Г®ГўГЁГ¬ Г¶ГўГҐГІ
 		pSeg->SetPen(color);
-		// Первая точка-начало и конец сегмента
+		// ГЏГҐГ°ГўГ Гї ГІГ®Г·ГЄГ -Г­Г Г·Г Г«Г® ГЁ ГЄГ®Г­ГҐГ¶ Г±ГҐГЈГ¬ГҐГ­ГІГ 
 		pSeg->AddPoint(TempPointsArray[0]);
 		EndSegPoint=TempPointsArray[0];
-		// Удаляем точку из общего массива точек
+		// Г“Г¤Г Г«ГїГҐГ¬ ГІГ®Г·ГЄГі ГЁГ§ Г®ГЎГ№ГҐГЈГ® Г¬Г Г±Г±ГЁГўГ  ГІГ®Г·ГҐГЄ
 		TempPointsArray.RemoveAt(0);
-		// Продолжаем полигон
+		// ГЏГ°Г®Г¤Г®Г«Г¦Г ГҐГ¬ ГЇГ®Г«ГЁГЈГ®Г­
 		while(fContinueSeg )
 		{	
 			posmin=0;
 			dmin=D*2;
-			// С начала массива
-			// Выбираем ближайшую к концу сегмента точку 
+			// Г‘ Г­Г Г·Г Г«Г  Г¬Г Г±Г±ГЁГўГ 
+			// Г‚Г»ГЎГЁГ°Г ГҐГ¬ ГЎГ«ГЁГ¦Г Г©ГёГіГѕ ГЄ ГЄГ®Г­Г¶Гі Г±ГҐГЈГ¬ГҐГ­ГІГ  ГІГ®Г·ГЄГі 
 			for(pos=0; pos<TempPointsArray.GetSize(); pos++)
 			{
 			  dcur=Dist(&EndSegPoint, &TempPointsArray[pos]);
 			  if(dcur<dmin) 
-			    {dmin=dcur; posmin=pos;}//запоминаем позицию(номер) ближайшей точки
+			    {dmin=dcur; posmin=pos;}//Г§Г ГЇГ®Г¬ГЁГ­Г ГҐГ¬ ГЇГ®Г§ГЁГ¶ГЁГѕ(Г­Г®Г¬ГҐГ°) ГЎГ«ГЁГ¦Г Г©ГёГҐГ© ГІГ®Г·ГЄГЁ
 			}
-			if(dmin<=D) //расстояние до ближайшей точки меньше эталонного,
+			if(dmin<=D) //Г°Г Г±Г±ГІГ®ГїГ­ГЁГҐ Г¤Г® ГЎГ«ГЁГ¦Г Г©ГёГҐГ© ГІГ®Г·ГЄГЁ Г¬ГҐГ­ГјГёГҐ ГЅГІГ Г«Г®Г­Г­Г®ГЈГ®,
 			{	
-				//но все-таки точка не совпадает с концом сегмента,
-				//поэтому добавим ее в сегмент
+				//Г­Г® ГўГ±ГҐ-ГІГ ГЄГЁ ГІГ®Г·ГЄГ  Г­ГҐ Г±Г®ГўГЇГ Г¤Г ГҐГІ Г± ГЄГ®Г­Г¶Г®Г¬ Г±ГҐГЈГ¬ГҐГ­ГІГ ,
+				//ГЇГ®ГЅГІГ®Г¬Гі Г¤Г®ГЎГ ГўГЁГ¬ ГҐГҐ Гў Г±ГҐГЈГ¬ГҐГ­ГІ
 				if(dmin>D/1000) 
 				{
-					//Ближайшую точу в сегмент
+					//ГЃГ«ГЁГ¦Г Г©ГёГіГѕ ГІГ®Г·Гі Гў Г±ГҐГЈГ¬ГҐГ­ГІ
 					pSeg->AddPoint(TempPointsArray[posmin]);
-					//Новая точка становиться концом сегмента
+					//ГЌГ®ГўГ Гї ГІГ®Г·ГЄГ  Г±ГІГ Г­Г®ГўГЁГІГјГ±Гї ГЄГ®Г­Г¶Г®Г¬ Г±ГҐГЈГ¬ГҐГ­ГІГ 
 					EndSegPoint=TempPointsArray[posmin];
 				}
 
-				//Удаляем эту точку
+				//Г“Г¤Г Г«ГїГҐГ¬ ГЅГІГі ГІГ®Г·ГЄГі
 				TempPointsArray.RemoveAt(posmin);
 			}
-			else //не нашли близкой к концу точки- закрываем сегмент
+			else //Г­ГҐ Г­Г ГёГ«ГЁ ГЎГ«ГЁГ§ГЄГ®Г© ГЄ ГЄГ®Г­Г¶Гі ГІГ®Г·ГЄГЁ- Г§Г ГЄГ°Г»ГўГ ГҐГ¬ Г±ГҐГЈГ¬ГҐГ­ГІ
 				fContinueSeg=FALSE;
 		} ;
-		//Проверим, может стоит замкнуть сегмент
+		//ГЏГ°Г®ГўГҐГ°ГЁГ¬, Г¬Г®Г¦ГҐГІ Г±ГІГ®ГЁГІ Г§Г Г¬ГЄГ­ГіГІГј Г±ГҐГЈГ¬ГҐГ­ГІ
 		if(pSeg->m_3DPointsArray.GetSize()>2)
 			if(Dist(&pSeg->m_3DPointsArray[0], &pSeg->m_3DPointsArray[pSeg->m_3DPointsArray.GetSize()-1])<D)
 				pSeg->AddPoint(pSeg->m_3DPointsArray[0]);
 		
 			
-		//Добавляем полигон в фигуру 
+		//Г„Г®ГЎГ ГўГ«ГїГҐГ¬ ГЇГ®Г«ГЁГЈГ®Г­ Гў ГґГЁГЈГіГ°Гі 
 		pShape->AddPolygon(pSeg);
 	} 	
-	//Временный полигон нам больше не нужен
+	//Г‚Г°ГҐГ¬ГҐГ­Г­Г»Г© ГЇГ®Г«ГЁГЈГ®Г­ Г­Г Г¬ ГЎГ®Г«ГјГёГҐ Г­ГҐ Г­ГіГ¦ГҐГ­
 	delete pTempPolygon;
 	return 1;
 }
@@ -702,29 +706,29 @@ void AddTriangleSection(C3DPolygon *p3DPolygon, POINT3D *pP1, POINT3D *pP2, POIN
 	int  f1,f2,f3;
 	double x1,x2,x3,y1,y2,y3;
 	POINT3D P1, P2;
-	if(	!((pP1->z==level)&&(pP2->z==level)&&(pP3->z==level)) && //треугольник в плоскости
-   		!((pP1->z>level)&&(pP2->z>level)&&(pP3->z>level)) &&   //треугольник и плоскость не пересекаются
-		!((pP1->z<level)&&(pP2->z<level)&&(pP3->z<level)) )	   //треугольник и плоскость не пересекаются
+	if(	!((pP1->z==level)&&(pP2->z==level)&&(pP3->z==level)) && //ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄ Гў ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
+   		!((pP1->z>level)&&(pP2->z>level)&&(pP3->z>level)) &&   //ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄ ГЁ ГЇГ«Г®Г±ГЄГ®Г±ГІГј Г­ГҐ ГЇГҐГ°ГҐГ±ГҐГЄГ ГѕГІГ±Гї
+		!((pP1->z<level)&&(pP2->z<level)&&(pP3->z<level)) )	   //ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄ ГЁ ГЇГ«Г®Г±ГЄГ®Г±ГІГј Г­ГҐ ГЇГҐГ°ГҐГ±ГҐГЄГ ГѕГІГ±Гї
 
-   	if((pP1->z==level)&&(pP2->z==level))	//сторона в плоскости - добавляем
+   	if((pP1->z==level)&&(pP2->z==level))	//Г±ГІГ®Г°Г®Г­Г  Гў ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ - Г¤Г®ГЎГ ГўГ«ГїГҐГ¬
    	{
 		p3DPolygon->AddPoint(*pP1);
 		p3DPolygon->AddPoint(*pP2);
    	}
 	else
-		if((pP2->z==level)&&(pP3->z==level)) //сторона в плоскости - добавляем
+		if((pP2->z==level)&&(pP3->z==level)) //Г±ГІГ®Г°Г®Г­Г  Гў ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ - Г¤Г®ГЎГ ГўГ«ГїГҐГ¬
    		{ 
    			p3DPolygon->AddPoint(*pP2);
 			p3DPolygon->AddPoint(*pP3);
 		}
    		else
-   			if((pP3->z==level)&&(pP1->z==level)) //сторона в плоскости - добавляем
+   			if((pP3->z==level)&&(pP1->z==level)) //Г±ГІГ®Г°Г®Г­Г  Гў ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ - Г¤Г®ГЎГ ГўГ«ГїГҐГ¬
    		    { 
 	   			p3DPolygon->AddPoint(*pP3);
 				p3DPolygon->AddPoint(*pP1);
 			}
    			else
-   			{	// Находим 	пересечение каждой стороны треугольника с плоскостью
+   			{	// ГЌГ ГµГ®Г¤ГЁГ¬ 	ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГҐ ГЄГ Г¦Г¤Г®Г© Г±ГІГ®Г°Г®Г­Г» ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄГ  Г± ГЇГ«Г®Г±ГЄГ®Г±ГІГјГѕ
 				 f1=CutCross(level,pP1, pP2, x1, y1); 
 				 f2=CutCross(level,pP2, pP3, x2, y2);
 				 f3=CutCross(level,pP3, pP1, x3, y3);
@@ -753,9 +757,9 @@ void AddTriangleSection(C3DPolygon *p3DPolygon, POINT3D *pP1, POINT3D *pP2, POIN
 }
 
 int CutCross(double level, POINT3D *pP1, POINT3D *pP2, double &x, double &y)
-{ if( (pP1->z<level && pP2->z<level) || //отрезок под плоскостью level
-      (pP1->z>level && pP2->z>level) ||	//отрезок над плоскостью level
-	  (pP1->z==pP2->z)  ) 	 //отрезок в плоскости level
+{ if( (pP1->z<level && pP2->z<level) || //Г®ГІГ°ГҐГ§Г®ГЄ ГЇГ®Г¤ ГЇГ«Г®Г±ГЄГ®Г±ГІГјГѕ level
+      (pP1->z>level && pP2->z>level) ||	//Г®ГІГ°ГҐГ§Г®ГЄ Г­Г Г¤ ГЇГ«Г®Г±ГЄГ®Г±ГІГјГѕ level
+	  (pP1->z==pP2->z)  ) 	 //Г®ГІГ°ГҐГ§Г®ГЄ Гў ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ level
 		{x=pP1->x; y=pP1->y; return 0;} 
   else
     {

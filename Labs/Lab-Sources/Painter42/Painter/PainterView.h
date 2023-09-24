@@ -17,6 +17,7 @@
 #define OP_SQUARE		4
 #define OP_SURFACE		5
 #define OP_MY_FIGURE	6
+#define OP_STAR			7
 
 #define OP_SELECT	10
 
@@ -36,6 +37,7 @@ public:
 	HCURSOR m_hcurSquare;	// рисуем квадрат
 	HCURSOR m_hcurMyFigure;	// рисуем свою фигуру
 	HCURSOR m_hcurPolygon;	// рисуем полилинию или полигон
+	HCURSOR m_hcurStar;	// рисуем полилинию или полигон
 	HCURSOR m_hcurSurface;	// рисуем поверхность
 	// Курсор "по умолчанию"
 	HCURSOR m_hcurDefault;	// используем в операции выбора
@@ -90,7 +92,7 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnEditAddshapePolyline();
 	afx_msg void OnEditAddshapePolygon();
-	afx_msg void OnEditAddshapeMyPolygon();
+	afx_msg void OnEditAddshapeStar();
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
