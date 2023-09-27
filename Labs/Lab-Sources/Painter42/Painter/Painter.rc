@@ -156,7 +156,7 @@ BEGIN
             MENUITEM "Po&lyline",                   ID_EDIT_ADDSHAPE_POLYLINE
 
             MENUITEM "Poly&gon",                    ID_EDIT_ADDSHAPE_POLYGON
-            MENUITEM "Star&",                       ID_EDIT_ADDSHAPE_STAR
+            MENUITEM "Star",                        ID_EDIT_ADDSHAPE_STAR
             MENUITEM "Sur&face",                    ID_EDIT_ADDSHAPE_SURFACE
         END
         POPUP "Change &Order"
@@ -313,6 +313,7 @@ END
 IDC_CURSOR_SQUARE       CURSOR  DISCARDABLE     "res\\square.cur"
 IDC_CURSOR_MY_FIGURE    CURSOR  DISCARDABLE     "res\\circle.cur"
 IDC_CURSOR_POLYGON      CURSOR  DISCARDABLE     "res\\polygon.cur"
+IDC_CURSOR_STAR        CURSOR  DISCARDABLE     "res\\polygon.cur"
 IDC_CURSOR_SURFACE      CURSOR  DISCARDABLE     "res\\surface.cur"
 IDC_CURSOR_CIRCLE       CURSOR  DISCARDABLE     "res\\circle.cur"
 

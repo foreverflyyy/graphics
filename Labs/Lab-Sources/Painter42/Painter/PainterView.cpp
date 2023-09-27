@@ -65,6 +65,7 @@ CPainterView::CPainterView()
 	m_hcurSquare=AfxGetApp()->LoadCursor(IDC_CURSOR_SQUARE);
 	m_hcurMyFigure=AfxGetApp()->LoadCursor(IDC_CURSOR_MY_FIGURE);
 	m_hcurPolygon=AfxGetApp()->LoadCursor(IDC_CURSOR_POLYGON);
+	m_hcurStar =AfxGetApp()->LoadCursor(IDC_CURSOR_STAR);
 	m_hcurSurface=AfxGetApp()->LoadCursor(IDC_CURSOR_SURFACE);
 }
 
@@ -397,17 +398,17 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
 	break;
 	case OP_MY_FIGURE:
+		pShape = new CMyFigure(first_point.x, first_point.y, size * 2);
+		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
+		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+	break;
+	case OP_STAR:
 		pShape = new CStar();
 		((CStar*)pShape)->SetCenter(first_point.x, first_point.y, size * 2);
 
 		pShape->SetPen(RGB(0, 0, 0), 100, PS_GEOMETRIC);
 		pShape->SetBrush(RGB(255, 0, 0));
 	break;
-	case OP_STAR:
-		pShape = new CMyFigure(first_point.x, first_point.y, size * 2);
-		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
-		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
-		break;
 	case OP_SURFACE:
 		// Создаем объект - поверхность
 		pShape=AddSurface(first_point, size);
