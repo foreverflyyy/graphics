@@ -407,7 +407,7 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		((CStar*)pShape)->SetCenter(first_point.x, first_point.y, size * 2);
 
 		pShape->SetPen(RGB(0, 0, 0), 100, PS_GEOMETRIC);
-		pShape->SetBrush(RGB(255, 0, 0));
+		pShape->SetBrush(RGB(255, 136, 0));
 	break;
 	case OP_SURFACE:
 		// Создаем объект - поверхность
