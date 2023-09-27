@@ -84,7 +84,7 @@ IDB_PATTERN3            BITMAP  DISCARDABLE     "Patterns\\Pattern3.bmp"
 IDB_PATTERN4            BITMAP  DISCARDABLE     "Patterns\\Pattern4.bmp"
 IDB_PATTERN5            BITMAP  DISCARDABLE     "Patterns\\Pattern5.bmp"
 IDB_PATTERN6            BITMAP  DISCARDABLE     "Patterns\\Pattern6.bmp"
-IDB_PATTERN7            BITMAP  DISCARDABLE     "Patterns\\Pattern7.bmp"
+IDB_PATTERN7            BITMAP  DISCARDABLE     "Patterns\\Pattern8.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -313,7 +313,7 @@ END
 IDC_CURSOR_SQUARE       CURSOR  DISCARDABLE     "res\\square.cur"
 IDC_CURSOR_MY_FIGURE    CURSOR  DISCARDABLE     "res\\circle.cur"
 IDC_CURSOR_POLYGON      CURSOR  DISCARDABLE     "res\\polygon.cur"
-IDC_CURSOR_STAR        CURSOR  DISCARDABLE     "res\\polygon.cur"
+IDC_CURSOR_STAR        CURSOR  DISCARDABLE     "res\\star.cur"
 IDC_CURSOR_SURFACE      CURSOR  DISCARDABLE     "res\\surface.cur"
 IDC_CURSOR_CIRCLE       CURSOR  DISCARDABLE     "res\\circle.cur"
 

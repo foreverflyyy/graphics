@@ -105,6 +105,7 @@
     <None Include="Patterns\Pattern5.bmp" />
     <None Include="Patterns\Pattern6.bmp" />
     <None Include="Patterns\Pattern7.bmp" />
+    <None Include="Patterns\Pattern8.bmp" />
     <None Include="ReadMe.txt" />
     <None Include="res\bitmap1.bmp" />
     <None Include="res\circle.cur" />
@@ -116,6 +117,8 @@
     <None Include="res\polygon.cur" />
     <None Include="res\square.cur" />
     <None Include="res\surface.cur" />
+    <None Include="res\star.cur" />
+    <None Include="res\myFigure.cur" />
     <None Include="res\Toolbar.bmp" />
     <None Include="res\Toolbar256.bmp" />
     <None Include="UserImages.bmp" />
@@ -149,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Painter.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Patterns\Pattern8.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
