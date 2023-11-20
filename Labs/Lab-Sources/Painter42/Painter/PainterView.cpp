@@ -29,12 +29,13 @@ BEGIN_MESSAGE_MAP(CPainterView, CScrollView)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POINT, OnEditAddshapePoint)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_CIRCLE, OnEditAddshapeCircle)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_SQUARE, OnEditAddshapeSquare)
-	ON_COMMAND(ID_EDIT_ADDSHAPE_MYFIGURE, OnEditAddshapeMyFigure)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_PICBMP, OnEditAddshapePicture)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_TRLIGHT, OnEditAddshapeTrafficlight)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_SPLINE, OnEditAddshapeSpline)
 	ON_COMMAND(ID_EDIT_SELECT, OnEditSelect)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POLYLINE, OnEditAddshapePolyline)
-	ON_COMMAND(ID_EDIT_ADDSHAPE_STAR, OnEditAddshapeStar)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_POLYGON, OnEditAddshapePolygon)
 	ON_WM_LBUTTONDBLCLK()
 	ON_WM_KEYDOWN()
@@ -45,12 +46,16 @@ BEGIN_MESSAGE_MAP(CPainterView, CScrollView)
 	ON_COMMAND(ID_EDIT_CHANGEORDER_BOTTOM, OnEditChangeorderBottom)
 	ON_COMMAND(ID_EDIT_DELETE, OnEditDelete)
 	ON_COMMAND(ID_EDIT_ADDSHAPE_SURFACE, OnEditAddshapeSurface)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_POLYFIG, OnEditAddshapePolyfig)
+	ON_COMMAND(ID_EDIT_ADDSHAPE_SPLINEFIG, OnEditAddshapeSplineFigure)
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, CView::OnFilePrintPreview)
 END_MESSAGE_MAP()
+
+HBITMAP hBM;
 
 /////////////////////////////////////////////////////////////////////////////
 // CPainterView construction/destruction
@@ -63,9 +68,7 @@ CPainterView::CPainterView()
 
 	m_hcurCircle=AfxGetApp()->LoadCursor(IDC_CURSOR_CIRCLE);
 	m_hcurSquare=AfxGetApp()->LoadCursor(IDC_CURSOR_SQUARE);
-	m_hcurMyFigure=AfxGetApp()->LoadCursor(IDC_CURSOR_MY_FIGURE);
 	m_hcurPolygon=AfxGetApp()->LoadCursor(IDC_CURSOR_POLYGON);
-	m_hcurStar =AfxGetApp()->LoadCursor(IDC_CURSOR_STAR);
 	m_hcurSurface=AfxGetApp()->LoadCursor(IDC_CURSOR_SURFACE);
 }
 
@@ -184,16 +187,18 @@ void CPainterView::OnLButtonDown(UINT nFlags, CPoint point)
 	m_CurMovePoint=m_FirstPoint=LogPoint;
 	switch(m_CurOper)
 	{
-		case OP_STAR:
-			AddShape(m_CurOper, m_FirstPoint, LogPoint);
+		case OP_SPLINE:
+			((Spline*)pDoc->m_ShapesList.GetTail())->m_BasePointsArray.Add(LogPoint);
+			((Spline*)pDoc->m_ShapesList.GetTail())->makeSplinePoints();
+			// Указываем, что окно надо перерисовать
 			Invalidate();
-			break;
+		break;
 		case OP_LINE:
 			// Последним в списке должен быть полигон
 			((CPolygon*)pDoc->m_ShapesList.GetTail())->m_PointsArray.Add(LogPoint);
 			// Указываем, что окно надо перерисовать
 			Invalidate();
-			break;
+		break;
 	}
 	
 	// Даем возможность стандартному обработчику
@@ -222,9 +227,11 @@ void CPainterView::OnLButtonUp(UINT nFlags, CPoint point)
 	case OP_POINT:
 	case OP_CIRCLE:
 	case OP_SQUARE:
-	case OP_MY_FIGURE:
-	case OP_STAR:
+	case OP_TRLIGHT:
 	case OP_SURFACE:
+	case OP_POLYFIG:
+	case OP_SPLINEFIG:
+	case OP_PIC:
 		AddShape(m_CurOper, m_FirstPoint, LogPoint);
 		// Указываем, что окно надо перерисовать
 		Invalidate();
@@ -259,6 +266,13 @@ void CPainterView::OnMouseMove(UINT nFlags, CPoint point)
 	
 	switch(m_CurOper)
 	{
+		case OP_SPLINE:
+			if (((Spline*)pDoc->m_ShapesList.GetTail())->
+				m_BasePointsArray.GetSize() <= 0) break;
+			DrawMoveLine(m_FirstPoint, m_CurMovePoint);
+			m_CurMovePoint = LogPoint;
+			DrawMoveLine(m_FirstPoint, m_CurMovePoint);
+		break;
 		case OP_LINE:
 			if(((CPolygon*)pDoc->m_ShapesList.GetTail())->
 				m_PointsArray.GetSize()<=0) break;
@@ -269,9 +283,10 @@ void CPainterView::OnMouseMove(UINT nFlags, CPoint point)
 		case OP_POINT:
 		case OP_CIRCLE:
 		case OP_SQUARE:
-		case OP_MY_FIGURE:
-		case OP_STAR:
+		case OP_TRLIGHT:
 		case OP_SURFACE:
+		case OP_POLYFIG:
+		case OP_SPLINEFIG:
 			if(nFlags==MK_LBUTTON) DrawMoveLine(m_FirstPoint, m_CurMovePoint);
 			m_CurMovePoint=LogPoint;
 			if(nFlags==MK_LBUTTON) DrawMoveLine(m_FirstPoint, m_CurMovePoint);
@@ -310,6 +325,7 @@ void CPainterView::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	switch(m_CurOper)
 	{
+	case OP_SPLINE:
 	case OP_LINE:
 		m_CurOper=OP_NOOPER;
 	break;
@@ -373,6 +389,7 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 
 	switch(shape)
 	{
+	case OP_SPLINE:
 	case OP_LINE:
 	break;
 	case OP_POINT:
@@ -397,22 +414,26 @@ void CPainterView::AddShape(int shape, CPoint first_point, CPoint second_point)
 		// Темно-серая диагональная штриховка
 		pShape->SetBrush(RGB(100,100,100),0,HS_DIAGCROSS);
 	break;
-	case OP_MY_FIGURE:
-		pShape = new CMyFigure(first_point.x, first_point.y, size * 2);
-		pShape->SetPen(RGB(200, 0, 0), 100, PS_GEOMETRIC);
-		pShape->SetBrush(RGB(100, 100, 100), 0, HS_DIAGCROSS);
+	case OP_TRLIGHT:
+		// Создаем объект - круг
+		pShape = new Traffic_light(first_point.x, first_point.y, size);
+		// Темно-серая заливка
+	//pShape->SetBrush(RGB(255, 255, 0));
 	break;
-	case OP_STAR:
-		pShape = new CStar();
-		((CStar*)pShape)->SetCenter(first_point.x, first_point.y, size * 2);
 
-		pShape->SetPen(RGB(0, 0, 0), 100, PS_GEOMETRIC);
-		pShape->SetBrush(RGB(255, 136, 0));
+	case OP_POLYFIG:
+		pShape = new PolyFigure(first_point.x, first_point.y, size);
+		pShape->SetBrush(RGB(0, 100, 0));	
+	break;
+	case OP_SPLINEFIG:
+		pShape = new SplineFigure(first_point.x, first_point.y, size);
 	break;
 	case OP_SURFACE:
 		// Создаем объект - поверхность
 		pShape=AddSurface(first_point, size);
 	break;
+	case OP_PIC:
+		pShape = new BMPPicture(first_point.x, first_point.y, hBM);
 	}
 	if(pShape!=NULL) // создали фигуру
 	{
@@ -443,16 +464,65 @@ void CPainterView::OnEditAddshapeSquare()
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSquare);
 }
 
-void CPainterView::OnEditAddshapeMyFigure() 
+void CPainterView::OnEditAddshapePicture()
 {
-	m_CurOper= OP_MY_FIGURE;
-	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurMyFigure);
+	CString sFilePath;
+	const TCHAR szFilter[] = _T("BMP Files (*.bmp)|*.bmp|All Files (*.*)|*.*||");
+	CFileDialog dlg(FALSE, _T("csv"), NULL,
+		OFN_HIDEREADONLY | OFN_FILEMUSTEXIST, szFilter, this);
+	if (dlg.DoModal() == IDOK)
+	{
+		sFilePath = dlg.GetPathName();
+	}
+	hBM = (HBITMAP)LoadImage(AfxGetInstanceHandle(), sFilePath, IMAGE_BITMAP, 5000, 5000, LR_CREATEDIBSECTION | LR_DEFAULTSIZE | LR_LOADFROMFILE);
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSurface);
+
+	m_CurOper = OP_PIC;
 }
 
-void CPainterView::OnEditAddshapeStar()
+void CPainterView::OnEditAddshapeTrafficlight()
 {
-	m_CurOper = OP_STAR;
-	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurStar);
+	m_CurOper = OP_TRLIGHT;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurTrLight);
+}
+
+void CPainterView::OnEditAddshapeSpline()
+{
+	CBasePoint* pShape = new Spline;
+	// Черная линия шириной 0.5 мм
+	pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+	CPainterDoc* pDoc = GetDocument();
+	// Добавляем в конец списка
+	pDoc->m_ShapesList.AddTail(pShape);
+	// Последняя фигура становится активной
+	pDoc->m_pSelShape = pShape;
+	// Указываем, что документ изменен
+	pDoc->SetModifiedFlag();
+	m_CurOper = OP_SPLINE;
+	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSpline);
+}
+
+void CPainterView::OnEditAddshapeSplineFigure()
+{
+	CBasePoint* pShape = new SplineFigure;
+	// Темно-зеленая заливка
+	// Черная линия шириной 0.5 мм
+	pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+
+	// Так как pShape указатель на CBasePoint,
+	// а метод SetPolygon() имеется только у класса CPolygon,
+	// требуется преобразование типа указателя
+	((CPolygon*)pShape)->SetPolygon(TRUE);
+
+	CPainterDoc* pDoc = GetDocument();
+	// Добавляем в конец списка
+	pDoc->m_ShapesList.AddTail(pShape);
+	// Последняя фигура становится активной
+	pDoc->m_pSelShape = pShape;
+	// Указываем, что документ изменен
+	pDoc->SetModifiedFlag();
+
+	m_CurOper = OP_SPLINEFIG;
 }
 
 void CPainterView::OnEditAddshapePolyline() 
@@ -472,31 +542,6 @@ void CPainterView::OnEditAddshapePolyline()
 	m_CurOper=OP_LINE;
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
 }
-
-//void CPainterView::OnEditAddshapeStar()
-//{
-//	CBasePoint *pShape=new CStar;
-//	// Темно-зеленая заливка
-//	pShape->SetBrush(RGB(0,100,0));
-//	// Черная линия шириной 0.5 мм
-//	pShape->SetPen(RGB(0,0,0), 50, PS_GEOMETRIC);
-//
-//	// Так как pShape указатель на CBasePoint,
-//	// а метод SetPolygon() имеется только у класса CPolygon,
-//	// требуется преобразование типа указателя
-//	((CPolygon*)pShape)->SetPolygon(TRUE);
-//
-//	CPainterDoc *pDoc=GetDocument();
-//	// Добавляем в конец списка
-//	pDoc->m_ShapesList.AddTail(pShape);
-//	// Последняя фигура становится активной
-//	pDoc->m_pSelShape=pShape;
-//	// Указываем, что документ изменен
-//	pDoc->SetModifiedFlag();
-//	
-//	m_CurOper = OP_LINE;
-//	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurPolygon);
-//}
 
 void CPainterView::OnEditAddshapePolygon() 
 {
@@ -527,6 +572,30 @@ void CPainterView::OnEditAddshapeSurface()
 {
 	m_CurOper=OP_SURFACE;
 	::SetClassLong(GetSafeHwnd(), GCL_HCURSOR, (LONG)m_hcurSurface);
+}
+
+void CPainterView::OnEditAddshapePolyfig()
+{
+	CBasePoint* pShape = new PolyFigure;
+	// Темно-зеленая заливка
+	pShape->SetBrush(RGB(0, 100, 0));
+	// Черная линия шириной 0.5 мм
+	pShape->SetPen(RGB(0, 0, 0), 50, PS_GEOMETRIC);
+
+	// Так как pShape указатель на CBasePoint,
+	// а метод SetPolygon() имеется только у класса CPolygon,
+	// требуется преобразование типа указателя
+	((CPolygon*)pShape)->SetPolygon(TRUE);
+
+	CPainterDoc* pDoc = GetDocument();
+	// Добавляем в конец списка
+	pDoc->m_ShapesList.AddTail(pShape);
+	// Последняя фигура становится активной
+	pDoc->m_pSelShape = pShape;
+	// Указываем, что документ изменен
+	pDoc->SetModifiedFlag();
+
+	m_CurOper = OP_POLYFIG;
 }
 
 const int _GRID_DENSITY=30;

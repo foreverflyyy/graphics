@@ -18,5 +18,5 @@ CPoint Transform(const CPoint &point,
 
 double ZFunction(double x, double y)
 {
-	return (x*x+y*y)/10000;
+	return (x * x + y * y) / 10000;
 };

@@ -46,13 +46,7 @@
     <None Include="res\polygon.cur">
       <Filter>Файлы ресурсов</Filter>
     </None>
-    <None Include="res\star.cur">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
     <None Include="res\square.cur">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-    <None Include="res\myFigure.cur">
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="res\surface.cur">
@@ -80,9 +74,6 @@
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="Patterns\Pattern7.bmp">
-      <Filter>Файлы ресурсов</Filter>
-    </None>
-    <None Include="Patterns\Pattern8.bmp">
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="res\bitmap1.bmp">
@@ -157,5 +148,13 @@
     <ResourceCompile Include="Painter.rc">
       <Filter>Файлы ресурсов</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\doge.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Patterns\doge.bmp">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

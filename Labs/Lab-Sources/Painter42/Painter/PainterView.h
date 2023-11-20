@@ -10,14 +10,17 @@
 #endif // _MSC_VER > 1000
 
 // Определение операций
-#define OP_NOOPER		0
-#define OP_LINE			1
-#define OP_POINT		2
-#define OP_CIRCLE		3
-#define OP_SQUARE		4
-#define OP_SURFACE		5
-#define OP_MY_FIGURE	6
-#define OP_STAR			7
+#define OP_NOOPER	0
+#define OP_LINE		1
+#define OP_POINT	2
+#define OP_CIRCLE	3
+#define OP_SQUARE	4
+#define OP_SURFACE	5
+#define OP_TRLIGHT	6
+#define OP_POLYFIG	7
+#define OP_SPLINE	8
+#define OP_SPLINEFIG 9
+#define OP_PIC		11
 
 #define OP_SELECT	10
 
@@ -35,10 +38,10 @@ public:
 	// Курсоры различных операций
 	HCURSOR m_hcurCircle;	// рисуем круг
 	HCURSOR m_hcurSquare;	// рисуем квадрат
-	HCURSOR m_hcurMyFigure;	// рисуем свою фигуру
+	HCURSOR m_hcurTrLight;   // risuem trafic light (help)
 	HCURSOR m_hcurPolygon;	// рисуем полилинию или полигон
-	HCURSOR m_hcurStar;	// рисуем полилинию или полигон
 	HCURSOR m_hcurSurface;	// рисуем поверхность
+	HCURSOR m_hcurSpline;
 	// Курсор "по умолчанию"
 	HCURSOR m_hcurDefault;	// используем в операции выбора
 
@@ -86,13 +89,15 @@ protected:
 	afx_msg void OnEditAddshapePoint();
 	afx_msg void OnEditAddshapeCircle();
 	afx_msg void OnEditAddshapeSquare();
-	afx_msg void OnEditAddshapeMyFigure();
+	afx_msg void OnEditAddshapePicture();
+	afx_msg void OnEditAddshapeTrafficlight();
+	afx_msg void OnEditAddshapeSpline();
+	afx_msg void OnEditAddshapeSplineFigure();
 	afx_msg void OnEditSelect();
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnEditAddshapePolyline();
 	afx_msg void OnEditAddshapePolygon();
-	afx_msg void OnEditAddshapeStar();
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -102,6 +107,7 @@ protected:
 	afx_msg void OnEditChangeorderBottom();
 	afx_msg void OnEditDelete();
 	afx_msg void OnEditAddshapeSurface();
+	afx_msg void OnEditAddshapePolyfig();
 	//afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSaveBmp();
 	//}}AFX_MSG

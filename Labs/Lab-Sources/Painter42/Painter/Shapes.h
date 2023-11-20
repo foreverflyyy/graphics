@@ -1,6 +1,6 @@
-п»ї// ГґГ Г©Г« Shapes.h
+// файл Shapes.h
 ////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± ГЎГ Г§Г®ГўГ Гї ГІГ®Г·ГЄГ 
+//класс базовая точка
 #define MOVE_STEP 100
 #define ROTATE_STEP 5
 #define SHIFT_HOLD	1
@@ -9,234 +9,286 @@
 class CBasePoint: public CPoint, public CObject
 {
  	DECLARE_SERIAL(CBasePoint)
-	CPen	m_Pen;	// ГЇГҐГ°Г®
-	CBrush	m_Brush;// ГЄГЁГ±ГІГј
+	CPen	m_Pen;	// перо
+	CBrush	m_Brush;// кисть
 protected:
-	// ГЊГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ
+	// Метод сериализации
 	virtual void Serialize(CArchive& ar);
-	// ГЏГ®Г¤ГЈГ®ГІГ ГўГ«ГЁГўГ ГҐГІ ГЄГ®Г­ГІГҐГЄГ±ГІ ГіГ±ГІГ°Г®Г©Г±ГІГўГ 
+	// Подготавливает контекст устройства
 	virtual BOOL PrepareDC(CDC *pDC);
-	// Г‚Г®Г±Г±ГІГ ГўГ«ГЁГўГ ГҐГІ ГЄГ®Г­ГІГҐГЄГ±ГІ ГіГ±ГІГ°Г®Г©Г±ГІГўГ 
+	// Восставливает контекст устройства
 	virtual BOOL RestoreDC(CDC *pDC);
 public:
-	// Г„Г Г­Г­Г»ГҐ
-	WORD		m_wSize;			//Г°Г Г§Г¬ГҐГ° ГґГЁГЈГіГ°Г»
-	int			m_iPenStyle;		//Г±ГІГЁГ«Гј Г«ГЁГ­ГЁГ©
-	int			m_iPenWidth;		//ГёГЁГ°ГЁГ­Г  Г«ГЁГ­ГЁГ©
-	COLORREF	m_rgbPenColor;		//Г¶ГўГҐГІ Г«ГЁГ­ГЁГ©
-	int			m_iBrushStyle;		//Г±ГІГЁГ«Гј Г§Г Г«ГЁГўГЄГЁ
-	COLORREF	m_rgbBrushColor;	//Г¶ГўГҐГІ Г§Г Г«ГЁГўГЄГЁ
-	DWORD		m_dwPattern_ID;		//ГЁГ¤ГҐГ­ГІГЁГґГЁГЄГ ГІГ®Г° ГёГ ГЎГ«Г®Г­Г  Г§Г Г«ГЁГўГЄГЁ
+	// Данные
+	WORD		m_wSize;			//размер фигуры
+	int			m_iPenStyle;		//стиль линий
+	int			m_iPenWidth;		//ширина линий
+	COLORREF	m_rgbPenColor;		//цвет линий
+	int			m_iBrushStyle;		//стиль заливки
+	COLORREF	m_rgbBrushColor;	//цвет заливки
+	DWORD		m_dwPattern_ID;		//идентификатор шаблона заливки
 public:		
-	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
-	CBasePoint();				//ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г° ГЎГҐГ§ ГЇГ Г°Г Г¬ГҐГІГ°Г®Гў
-	CBasePoint(int x, int y, WORD s);	//ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г° Г± ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ
-	~CBasePoint(){};			//Г¤ГҐГ±ГІГ°ГіГЄГІГ®Г°
-	// ГЊГҐГІГ®Г¤Г»
-	// ГЋГІГ®ГЎГ°Г Г¦Г ГҐГІ ГґГЁГЈГіГ°Гі Г­Г  ГЅГЄГ°Г Г­ГҐ
+	// Конструкторы
+	CBasePoint();				//конструктор без параметров
+	CBasePoint(int x, int y, WORD s);	//конструктор с параметрами
+	~CBasePoint(){};			//деструктор
+	// Методы
+	// Отображает фигуру на экране
 	virtual void Show(CDC *pDC);
-	// Г‘Г®Г®ГЎГ№Г ГҐГІ Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ 
+	// Сообщает область захвата
 	virtual void GetRegion(CRgn &Rgn);
-	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГІ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г«ГЁГ­ГЁГ©
+	// Устанавливает параметры линий
 	virtual BOOL SetPen(COLORREF color, int width =1, int style=PS_SOLID);
-	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГІ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г§Г Г«ГЁГўГЄГЁ
+	// Устанавливает параметры заливки
 	virtual BOOL SetBrush(COLORREF color, DWORD pattern =0, int style=-1);
-	// Г‚Г»ГЇГ®Г«Г­ГїГҐГІ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГҐ Г­Г  ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
+	// Выполняет преобразование на плоскости
 	virtual void Transform(const CPoint &point0, double ang, int a, int b);
-	// ГђГҐГ ГЄГ¶ГЁГї Г­Г  Г­Г Г¦Г ГІГЁГҐ ГЄГ«Г ГўГЁГёГЁ
+	// Реакция на нажатие клавиши
 	virtual BOOL OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags); 
 };
 
+//////////////////////////////////////////////////////////////////////////////////////
+// MY SHIT
+
+class Traffic_light : public CBasePoint
+{
+	DECLARE_SERIAL(Traffic_light)
+protected:
+	// Метод сериализации
+public:
+	Traffic_light();				//конструктор без параметров
+	Traffic_light(int x, int y, WORD s);	//конструктор с параметрами
+	~Traffic_light(){};			//деструктор
+//Методы
+	// Отображает фигуру на экране
+	void Show(CDC* pDC);
+	// Сообщает область захвата
+};
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± ГЄГўГ Г¤Г°Г ГІ
+//класс квадрат
 class CSquare: public CBasePoint
 {
  	DECLARE_SERIAL(CSquare)   
  protected:  
-	 // ГЊГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ
+	 // Метод сериализации
 	void Serialize(CArchive& ar);
  public:		
-	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
+	// Конструкторы
 	CSquare(int x, int y, WORD s);
 	CSquare();
 	~CSquare(){};
-//ГЊГҐГІГ®Г¤Г»
-	// ГЋГІГ®ГЎГ°Г Г¦Г ГҐГІ ГґГЁГЈГіГ°Гі Г­Г  ГЅГЄГ°Г Г­ГҐ
+//Методы
+	// Отображает фигуру на экране
 	void Show(CDC *pDC);
-	// Г‘Г®Г®ГЎГ№Г ГҐГІ Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ 
+	// Сообщает область захвата
 	void GetRegion(CRgn &Rgn);
 };
 
 ////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± Г¬Г®Гї ГґГЁГЈГіГ°Г 
-class CMyFigure : public CBasePoint
-{
-	DECLARE_SERIAL(CMyFigure)
-protected:
-	// ГЊГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ
-	void Serialize(CArchive& ar);
-public:
-	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
-	CMyFigure(int x, int y, WORD s);
-	CMyFigure();
-	~CMyFigure() {};
-	//ГЊГҐГІГ®Г¤Г»
-		// ГЋГІГ®ГЎГ°Г Г¦Г ГҐГІ ГґГЁГЈГіГ°Гі Г­Г  ГЅГЄГ°Г Г­ГҐ
-	void Show(CDC* pDC);
-	// Г‘Г®Г®ГЎГ№Г ГҐГІ Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ 
-	void GetRegion(CRgn& Rgn);
-};
-
-////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± ГЇГ®Г«ГЁГЈГ®Г­
+//класс полигон
 class CPolygon: public CBasePoint
 {
  	DECLARE_SERIAL(CPolygon)   
-	BOOL	m_bPolygon;	// Г°ГҐГ¦ГЁГ¬ Г°ГЁГ±Г®ГўГ Г­ГЁГї: 
-	// TRUE - Г§Г ГЇГ®Г«Г­ГҐГ­Г­Г»Г© ГЇГ®Г«ГЁГЈГ®Г­,
-	// FALSE - Г«Г®Г¬Г Г­Г Гї ГЄГ°ГЁГўГ Гї. ГЌГҐГІ, Г«Г®Г¬Г Г­Г Гї ГЇГ°ГїГ¬Г Гї. ГЌГҐГІ, Г«Г®Г¬Г Г­Г Гї Г«ГЁГ­ГЁГї. Г‚Г®! 
+	BOOL	m_bPolygon;	// режим рисования: 
+	// TRUE - заполненный полигон,
+	// FALSE - ломаная кривая. Нет, ломаная прямая. Нет, ломаная линия. Во! 
 
  protected:  
-	 // ГЊГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ
+	 // Метод сериализации
 	void Serialize(CArchive& ar);
  public:
-	 // Г„ГЁГ­Г Г¬ГЁГ·ГҐГ±ГЄГЁГ© Г¬Г Г±Г±ГЁГў ГІГ®Г·ГҐГЄ-ГўГҐГ°ГёГЁГ­
+	 // Динамический массив точек-вершин
 	 CArray <CPoint, CPoint> m_PointsArray;
 		
-	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
+	// Конструкторы
 	 CPolygon();
 	~CPolygon();
-//ГЊГҐГІГ®Г¤Г»
-	// ГЋГІГ®ГЎГ°Г Г¦Г ГҐГІ ГґГЁГЈГіГ°Гі Г­Г  ГЅГЄГ°Г Г­ГҐ
+//Методы
+	// Отображает фигуру на экране
 	void Show(CDC *pDC);
-	// Г‘Г®Г®ГЎГ№Г ГҐГІ Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ 
+	// Сообщает область захвата
 	void GetRegion(CRgn &Rgn);
-	// Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГІ Г°ГҐГ¦ГЁГ¬ Г°ГЁГ±Г®ГўГ Г­ГЁГї ГЇГ®Г«ГЁГЈГ®Г­Г 
+	// Устанавливает режим рисования полигона
 	void SetPolygon(BOOL p) {m_bPolygon=p;};
-	// Г‚Г»ГЇГ®Г«Г­ГїГҐГІ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГҐ Г­Г  ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
+	// Выполняет преобразование на плоскости
 	void Transform(const CPoint &point0, double ang, int a, int b);
 };
 
-////////////////////////////////////////////////////
-// РљР»Р°СЃСЃ CStar
-class CStar : public CPolygon
+class PolyFigure : public CPolygon
 {
-	DECLARE_SERIAL(CStar)
-	BOOL	m_bPolygon;
-
-protected:
-	void Serialize(CArchive & ar);
 public:
-	CArray <CPoint, CPoint> m_PointsArray;
-
-	CStar();
-	~CStar();
-
-	void Show(CDC * pDC);
-	void SetCenter(int x, int y, WORD s);
-	void GetRegion(CRgn & Rgn);
-	void SetPolygon(BOOL p) { m_bPolygon = p; };
-	void Transform(const CPoint & point0, double ang, int a, int b);
+	PolyFigure();
+	PolyFigure(int x, int y, int s);
+	~PolyFigure();
+	
+	void Show(CDC* pDC);
 };
 
 ////////////////////////////////////////////////////
-// 3D ГІГ®Г·ГЄГ 
+// 3D точка
 struct POINT3D
 {
 	double x, y, z;
 }; 
 
-//ГЇГ Г°Г Г¬ГҐГІГ°Г»  ГІГ°ГҐГµГ¬ГҐГ°Г­Г®Г© Г±Г¶ГҐГ­Г»
+class Spline : public CPolygon
+{
+public:
+	CArray <CPoint, CPoint> m_BasePointsArray;
+	CArray <CPoint, CPoint> m_SplinePointsArray;
+	Spline();
+	~Spline();
+
+	void Show(CDC* pDC);
+
+	void makeSplinePoints();
+	void drawBasePoints(CDC* pDC);
+	
+	double getAngleForCP(CPoint thisPoint, CPoint leftPoint, CPoint rightPoint);
+
+	double GetLenght(CPoint a1, CPoint a2);
+	
+	CPoint GetMiddle1(CPoint a1, CPoint a2);
+
+	double angle(int x1, int y1, int x2, int y2);
+	bool figure = 0;
+
+};
+
+class SplineFigure : public Spline
+{
+public:
+	SplineFigure();
+	SplineFigure(int x, int y, float s);
+	~SplineFigure();
+};
+
+class Vector
+{
+public:
+	int x, y;
+	Vector(int x, int y);
+	Vector(CPoint start, CPoint end);
+	int operator*(Vector& other);
+	static double getAngleBetween(Vector& a, Vector& b);
+	double length();
+	Vector operator*(int num);
+
+};
+
+///////////////////////////////////
+//BMP PICTURE
+
+class BMPPicture : public CBasePoint
+{
+public:
+	HBITMAP hBM;
+	HBITMAP BM;
+	BMPPicture(int x, int y, HBITMAP hBmp);
+
+	void Show(CDC* pDC);
+};
+
+
+
+//параметры  трехмерной сцены
 struct  Perspective
 {
-	POINT3D	O;					// ГІГ®Г·ГЄГ , ГўГ®ГЄГ°ГіГЈ ГЄГ®ГІГ®Г°Г®Г© ГўГ»ГЇГ®Г«Г­ГїГҐГ¬ ГЇГ®ГўГ®Г°Г®ГІ
-	double	rho, theta, phi,	// ГЇГ®Г«ГїГ°Г­Г»ГҐ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» ГІГ®Г·ГЄГЁ Г­Г ГЎГ«ГѕГ¤ГҐГ­ГЁГї (E)
-			d;					// Г°Г Г±Г±ГІГ®ГїГ­ГЁГҐ Г®ГІ E Г¤Г® ГЅГЄГ°Г Г­Г 
-	WORD	with_perspective;   // 1- ГўГЄГ«. ГЇГҐГ°Г±ГЇГҐГЄГІГЁГўГ­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї; 0-ГўГ»ГЄГ«.
-	LONG	dx, dy;				// Г±Г¬ГҐГ№ГҐГ­ГЁГҐ ГЇГ°Г®ГҐГЄГ¶ГЁГЁ Г­Г  ГЅГЄГ°Г Г­ГҐ
+	POINT3D	O;					// точка, вокруг которой выполняем поворот
+	double	rho, theta, phi,	// полярные координаты точки наблюдения (E)
+			d;					// расстояние от E до экрана
+	WORD	with_perspective;   // 1- вкл. перспективные преобразования; 0-выкл.
+	LONG	dx, dy;				// смещение проекции на экране
 };
 
 ////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± C3DPolygon
+//класс C3DPolygon
 //
 class C3DPolygon: public CPolygon
 {
  	DECLARE_SERIAL(C3DPolygon)   
- protected:  	// Г¬ГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ	
+ protected:  	// метод сериализации	
 	void Serialize(CArchive& ar);
  public:		
- 	// ГЉГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
+ 	// Конструкторы
 	 C3DPolygon(){};
 	 ~C3DPolygon(){};
-// Г„Г Г­Г­Г»ГҐ
-	// Г„ГЁГ­Г Г¬ГЁГ·ГҐГ±ГЄГЁГ© Г¬Г Г±Г±ГЁГў ГІГ®Г·ГҐГЄ-ГўГҐГ°ГёГЁГ­ Гў Г¬ГЁГ°Г®ГўГ»Гµ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ Гµ
+// Данные
+	// Динамический массив точек-вершин в мировых координатах
 	CArray <POINT3D, POINT3D> m_3DPointsArray;	
-// ГЊГҐГІГ®Г¤Г»		
-	// Г„Г®ГЎГ ГўГЁГІГј ГІГ®Г·ГЄГі
+// Методы		
+	// Добавить точку
 	void AddPoint(POINT3D point) {m_3DPointsArray.Add(point);};
-	// ГђГ Г±Г·ГҐГІ ГЅГЄГ°Г Г­Г­Г»Гµ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІ
+	// Расчет экранных координат
 	void MakeProjection(Perspective P); 
 };
 
 
 ////////////////////////////////////////////////////
-//ГЄГ«Г Г±Г± C3DShape
+//класс C3DShape
 class C3DShape: public CBasePoint
 {
  	DECLARE_SERIAL(C3DShape)   
- protected:  	// Г‚ГЁГ°ГІГіГ Г«ГјГ­Г»Г© Г¬ГҐГІГ®Г¤ Г±ГҐГ°ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ	
+ protected:  	// Виртуальный метод сериализации	
 	void Serialize(CArchive& ar);
 	
  public:		
-	//ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г»
+	//конструкторы
 	C3DShape();
 	~C3DShape();
-//Г„Г Г­Г­Г»ГҐ
-	Perspective m_Percpective; //ГЇГ Г°Г Г¬ГҐГІГ°Г» Г®ГЎГ§Г®Г°Г 
-	CTypedPtrList<CObList, C3DPolygon*> m_PtrPolygonList; // Г±ГЇГЁГ±Г®ГЄ ГіГЄГ Г§Г ГІГҐГ«ГҐГ© Г­Г  ГЇГ®Г«ГЁГЈГ®Г­Г»
-//ГЊГҐГІГ®Г¤Г»
-	// ГђГ Г±Г·ГҐГІ ГЇГ°Г®ГҐГЄГ¶ГЁГЁ
+//Данные
+	Perspective m_Percpective; //параметры обзора
+	CTypedPtrList<CObList, C3DPolygon*> m_PtrPolygonList; // список указателей на полигоны
+//Методы
+	// Расчет проекции
 	void MakeProjection();
-	// ГЋГІГ®ГЎГ°Г Г¦ГҐГ­ГЁГҐ ГґГЁГЈГіГ°Г» Г­Г  ГЅГЄГ°Г Г­ГҐ
+	// Отображение фигуры на экране
 	void Show(CDC *pDC);
-	// Г‘Г®Г®ГЎГ№Г ГҐГІ Г®ГЎГ«Г Г±ГІГј Г§Г ГµГўГ ГІГ 
+	// Сообщает область захвата
 	void GetRegion(CRgn &Rgn);
-	// Г„Г®ГЎГ ГўГЁГІГј ГЇГ®Г«ГЁГЈГ®Г­
+	// Добавить полигон
 	void AddPolygon(C3DPolygon *pPolygon);
-	// ГђГҐГ ГЄГ¶ГЁГї Г­Г  Г­Г Г¦Г ГІГЁГҐ ГЄГ«Г ГўГЁГёГЁ
+	// Реакция на нажатие клавиши
 	BOOL OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags, UINT nMyFlags);
 };
 
 /////////////////////////////////////////////////////////////////////////////////
-// ГѓГ«Г®ГЎГ Г«ГјГ­Г»ГҐ ГґГіГ­ГЄГ¶ГЁГЁ Г¤Г«Гї Г°Г ГЎГ®ГІГ» Г± ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГїГ¬ГЁ,
-// ГЁГ§ ГЄГ®ГІГ®Г°Г»Гµ, ГЇГ®-ГµГ®Г°Г®ГёГҐГ¬Гі, Г­Г Г¤Г® ГЎГ» Г±Г¤ГҐГ«Г ГІГј ГЄГ«Г Г±Г± C3DSurface
+// Глобальные функции для работы с поверхностями,
+// из которых, по-хорошему, надо бы сделать класс C3DSurface
 
-// Г„Г®ГЎГ ГўГ«ГїГҐГІ Г«ГЁГ­ГЁГѕ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї (Г«ГЁГ­ГЁГѕ ГіГ°Г®ГўГ­Гї) ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГЁ,
-// Г§Г Г¤Г Г­Г­Г®Г© Г¬Г Г±Г±ГЁГўГ®Г¬ ГІГ®Г·ГҐГЄ POINT3D Г± ГЇГ«Г®Г±ГЄГ®Г±ГІГјГѕ,
-// Г§Г Г¤Г Г­Г­Г®Г© Г§Г­Г Г·ГҐГ­ГЁГҐГ¬ level (ГіГ°Г®ГўГҐГ­Гј ГЇГ® Z)
-// ГЏГ Г°Г Г¬ГҐГІГ°Г»:
-// pShape - ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  ГІГ°ГҐГµГ¬ГҐГ°Г­Г»Г© Г®ГЎГєГҐГЄГІ, ГЄГіГ¤Г  ГЎГіГ¤ГҐГІ Г¤Г®ГЎГ ГўГ«ГҐГ­Г® Г±ГҐГ·ГҐГ­ГЁГҐ
-// pSur - ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  Г¬Г Г±Г±ГЁГў ГІГ®Г·ГҐГЄ, Г§Г Г¤Г ГѕГ№ГЁГµ ГЇГўГҐГ°ГµГ­Г®Г±ГІГј
-// x_size, y_size - Г°Г Г§Г¬ГҐГ° Г¬Г Г±Г±ГЁГўГ  ГІГ®Г·ГҐГЄ
-// level - ГіГ°Г®ГўГҐГ­Гј Г±ГҐГЄГіГ№ГҐГ© ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
-// color - Г¶ГўГҐГІ Г«ГЁГ­ГЁГЁ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї  
-// Г‚Г®Г§ГўГ°Г Г№Г ГҐГ¬Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ:
-// 0 - Г­ГҐГіГ¤Г Г·Г 
-// 1 - ГіГ±ГЇГҐГµ
+// Добавляет линию пересечения (линию уровня) поверхности,
+// заданной массивом точек POINT3D с плоскостью,
+// заданной значением level (уровень по Z)
+// Параметры:
+// pShape - указатель на трехмерный объект, куда будет добавлено сечение
+// pSur - указатель на массив точек, задающих пверхность
+// x_size, y_size - размер массива точек
+// level - уровень секущей плоскости
+// color - цвет линии пересечения  
+// Возвращаемое значение:
+// 0 - неудача
+// 1 - успех
 int AddRsection(C3DShape *pShape, POINT3D *pSur, int x_size, int y_size, double level,  COLORREF color);
 
-// Г„Г®ГЎГ ГўГ«ГїГҐГІ Г«ГЁГ­ГЁГѕ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї ГІГ°ГҐГіГЈГ®Г«ГјГЄГ ,
-// Г§Г Г¤Г Г­Г­Г®ГЈГ® ГІГ°ГҐГ¬Гї ГІГ®Г·ГЄГ Г¬ГЁ Г± ГЇГ«Г®Г±ГЄГ®Г±ГІГјГѕ,
-// Г§Г Г¤Г Г­Г­Г®Г© Г§Г­Г Г·ГҐГ­ГЁГҐГ¬ level (ГіГ°Г®ГўГҐГ­Гј ГЇГ® Z)
-// ГЏГ Г°Г Г¬ГҐГІГ°Г»:
-// p3DPolygon - ГіГЄГ Г§Г ГІГҐГ«Гј Г­Г  ГЇГ®Г«ГЁГЈГ®Г­, ГЄГіГ¤Г  ГЎГіГ¤ГҐГІ Г¤Г®ГЎГ ГўГ«ГҐГ­Г» ГІГ®Г·ГЄГЁ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї
-// pP1, pP2, pP3 - ГіГЄГ Г§Г ГІГҐГ«ГЁ Г­Г  ГІГ®Г·ГҐГЄГЁ, Г§Г Г¤Г ГѕГ№ГЁГҐ ГІГ°ГҐГіГЈГ®Г«ГјГ­ГЁГЄ
-// level - ГіГ°Г®ГўГҐГ­Гј Г±ГҐГЄГіГ№ГҐГ© ГЇГ«Г®Г±ГЄГ®Г±ГІГЁ
+// Добавляет линию пересечения треуголька,
+// заданного тремя точками с плоскостью,
+// заданной значением level (уровень по Z)
+// Параметры:
+// p3DPolygon - указатель на полигон, куда будет добавлены точки пересечения
+// pP1, pP2, pP3 - указатели на точеки, задающие треугольник
+// level - уровень секущей плоскости
 void AddTriangleSection(C3DPolygon *p3DPolygon, POINT3D *pP1, POINT3D *pP2, POINT3D *pP3, double level);
 
-// ГЂ ГЅГІГЁ ГґГіГ­ГЄГ¶ГЁГЁ ГўГЇГ®Г«Г­ГҐ Г¬Г®Г¦Г­Г® Г®Г±ГІГ ГўГЁГІГј ГЈГ«Г®ГЎГ Г«ГјГ­Г»Г¬ГЁ
+// А эти функции вполне можно оставить глобальными
 
-// ГђГ Г±Г±Г·ГЁГІГ»ГўГ ГҐГІ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» x,y ГІГ®Г·ГЄГЁ ГЇГҐГ°ГҐГ±ГҐГ·ГҐГ­ГЁГї Г®ГІГ°ГҐГ§ГЄГ  pP1, pP2 Г± ГЇГ®ГўГҐГ°ГµГ­Г®Г±ГІГјГѕ level
+// Рассчитывает координаты x,y точки пересечения отрезка pP1, pP2 с поверхностью level
 int CutCross(double level, POINT3D *pP1, POINT3D *pP2, double &x, double &y);
-// ГђГ Г±Г±Г·ГЁГІГ»ГўГ ГҐГІ Г°Г Г±Г±ГІГ®ГїГ­ГЁГҐ Г¬ГҐГ¦Г¤Гі Г¤ГўГіГ¬Гї ГІГ®Г·ГЄГ Г¬ГЁ
+// Рассчитывает расстояние между двумя точками
 double Dist(POINT3D *pP1, POINT3D* pP2);

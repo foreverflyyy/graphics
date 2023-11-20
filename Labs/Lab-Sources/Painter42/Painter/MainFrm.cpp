@@ -150,6 +150,9 @@ void CMainFrame::FillPatternsList()
 	bm.LoadBitmap(IDB_PATTERN7);
 	index=m_PatternsList.Add(&bm, RGB(0, 0, 0)); 	bm.DeleteObject( );
 
+	bm.LoadBitmap(IDB_PATTERNDOGE);
+	index = m_PatternsList.Add(&bm, RGB(0, 0, 0));  bm.DeleteObject( );
+
 /*
 		// Загрузка шаблонов заливки из файлов BMP на диске
 		
@@ -208,6 +211,7 @@ void CMainFrame::SetSelectedPattern()
 		case 5: Pattern_ID=IDB_PATTERN5; break;
 		case 6: Pattern_ID=IDB_PATTERN6; break;
 		case 7: Pattern_ID=IDB_PATTERN7; break;
+		case 8: Pattern_ID = IDB_PATTERNDOGE; break;
 	}
 	
 	// Получили указатель на документ
